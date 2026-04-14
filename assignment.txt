@@ -1,0 +1,101 @@
+             Scheduling Platform
+
+                          (Calendly Clone)
+
+                                  SDE Intern Fullstack Assignment
+
+Description
+
+Build a functional scheduling/booking web application that closely replicates Calendly's
+design and user experience. The application should allow users to create event types, set
+their availability, and let others book time slots through a public booking page. Your
+implementation should visually resemble Calendly's UI patterns, layout structure, and
+interaction design.
+
+AI Tools Usage
+
+You are allowed and encouraged to use AI tools such as ChatGPT, Claude, GitHub
+Copilot, Cursor, or any other AI assistants for development. However, you must understand
+every line of code you submit and be prepared to explain your implementation decisions
+during the evaluation interview.
+
+Technical Stack
+
+    · Frontend: React.js or Next.js (Single Page Application)
+    · Backend: Node.js with Express.js OR Python with FastAPI/Django
+    · Database: PostgreSQL or MySQL (design your own schema)
+
+Core Features (Must Have)
+
+1. Event Types Management
+    · Create event types with name, duration (in minutes), and URL slug
+    · Edit and delete existing event types
+    · List all event types on the scheduling page
+    · Each event type should have a unique public booking link
+
+2. Availability Settings
+    · Set available days of the week (e.g., Monday to Friday)
+    · Set available time slots for each day (e.g., 9:00 AM - 5:00 PM)
+    · Set timezone for the availability schedule
+
+3. Public Booking Page
+    · Month calendar view to select a date
+    · Display available time slots for the selected date
+    · Booking form to collect invitee's name and email
+    · Prevent double booking of the same time slot
+    · Booking confirmation page with meeting details
+
+4. Meetings Page
+    · View upcoming meetings
+    · View past meetings
+    · Cancel a meeting
+Good to Have (Bonus)
+
+    · Responsive design (mobile, tablet, desktop)
+    · Multiple availability schedules
+    · Date-specific hours (override availability for specific dates)
+    · Rescheduling flow for existing meetings
+    · Email notifications on booking confirmation/cancellation
+    · Buffer time before/after meetings
+    · Custom invitee questions on booking form
+
+Important Notes
+
+    · UI Design: Your application should closely resemble Calendly's design. Study
+         Calendly's UI carefully before starting - visit calendly.com to understand the user
+         flows and interface patterns.
+
+    · No Login Required: Assume a default user is logged in for the admin side (event
+         types, availability, meetings). The public booking page is accessible without login.
+
+    · Sample Data: Seed your database with sample event types and a few meetings.
+    · Database Design: Design your own database schema. This will be evaluated.
+    · README File: Include setup instructions, tech stack used, and any assumptions
+
+         made.
+    · Original Work: Plagiarism from existing repositories will result in immediate
+
+         disqualification.
+
+Submission
+
+    · Upload your code to GitHub and ensure the repository is public
+    · Deploy your application (Vercel, Netlify, Render, Railway, or any cloud service)
+    · Submit both the GitHub repository link and the deployed application link
+
+Evaluation Criteria  What We Look For
+                     All core features working correctly
+ Criteria            Visual similarity to Calendly's design and UX patterns
+ Functionality       Well-structured schema with proper relationships
+ UI/UX               Clean, readable, and well-organized code
+ Database Design     Proper separation of concerns, reusable components
+ Code Quality        Ability to explain your code during evaluation
+ Code Modularity
+ Code Understanding
+
+Timeline
+
+Submission Deadline: 2 days from the date of receiving this assignment
+
+                                                 Good luck!
+
