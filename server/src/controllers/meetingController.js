@@ -1,6 +1,6 @@
 import { asyncHandler } from '../utils/errors.js';
 import { cancelMeeting, cancelMeetingByToken, createBooking, getMeetingByToken, getMeetingPublicById, listMeetings, rescheduleMeetingByToken } from '../services/meetingService.js';
-import { getEventTypeBySlug } from '../services/eventTypeService.js';
+import { getEventTypeBySlug, listPublicEventTypes } from '../services/eventTypeService.js';
 
 export const getMeetings = asyncHandler(async (req, res) => {
   res.json(await listMeetings(req.query.scope));
@@ -14,6 +14,10 @@ export const postBooking = asyncHandler(async (req, res) => {
 export const getEventTypePublic = asyncHandler(async (req, res) => {
   const eventType = await getEventTypeBySlug(req.params.slug);
   res.json(eventType);
+});
+
+export const getPublicEventTypes = asyncHandler(async (_req, res) => {
+  res.json(await listPublicEventTypes());
 });
 
 export const cancelMeetingById = asyncHandler(async (req, res) => {

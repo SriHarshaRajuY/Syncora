@@ -8,8 +8,8 @@ const primaryLinks = [
 ];
 
 export function SiteHeader({
-  ctaLabel = 'Book Demo',
-  ctaTo = '/book/intro-call',
+  ctaLabel = 'Find a Time',
+  ctaTo = '/book',
   compact = false,
   showSecondary = true,
   secondaryLabel = 'Dashboard',

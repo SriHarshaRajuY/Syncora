@@ -9,7 +9,7 @@ export function HomePage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    Promise.all([api.get('/event-types'), api.get('/meetings?scope=upcoming')])
+    Promise.all([api.get('/meetings/public/event-types'), api.get('/meetings?scope=upcoming')])
       .then(([eventData, meetingData]) => {
         setEventTypes(eventData);
         setMeetings(meetingData.slice(0, 3));
@@ -28,7 +28,7 @@ export function HomePage() {
 
   return (
     <div className="marketing-shell">
-      <SiteHeader ctaTo={eventTypes[0] ? `/book/${eventTypes[0].slug}` : '/events'} />
+      <SiteHeader ctaTo="/book" />
 
       <main>
         <section className="hero-section">
@@ -42,8 +42,8 @@ export function HomePage() {
             </p>
 
             <div className="hero-actions">
-              <Link className="primary-button" to={eventTypes[0] ? `/book/${eventTypes[0].slug}` : '/events'}>
-                Open booking flow
+              <Link className="primary-button" to="/book">
+                Find a time
               </Link>
               <Link className="ghost-button" to="/events">
                 Manage workspace
@@ -79,7 +79,7 @@ export function HomePage() {
 
             <div className="hero-card hero-card-floating">
               <p className="eyebrow">Booking page</p>
-              <h4>Intro Call</h4>
+              <h4>{eventTypes[0]?.name || 'Booking Flow'}</h4>
               <div className="slot-stack">
                 <span>10:00 AM</span>
                 <span>10:30 AM</span>

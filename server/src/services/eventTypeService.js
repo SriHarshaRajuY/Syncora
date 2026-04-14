@@ -30,6 +30,25 @@ export const listEventTypes = async () => {
   }));
 };
 
+export const listPublicEventTypes = async () => {
+  const [rows] = await pool.query(
+    `
+      SELECT et.*, s.name AS schedule_name, s.timezone AS schedule_timezone
+      FROM event_types et
+      LEFT JOIN availability_schedules s ON s.id = et.schedule_id
+      WHERE et.user_id = ? AND et.is_active = TRUE
+      ORDER BY et.created_at DESC
+    `,
+    [DEFAULT_USER_ID]
+  );
+
+  return rows.map((row) => ({
+    ...mapEventType(row),
+    scheduleName: row.schedule_name,
+    scheduleTimezone: row.schedule_timezone
+  }));
+};
+
 export const getEventTypeBySlug = async (slug) => {
   const [rows] = await pool.query(
     `
@@ -140,4 +159,3 @@ export const deleteEventType = async (id) => {
   await getEventTypeById(id);
   await pool.query('DELETE FROM event_types WHERE id = ? AND user_id = ?', [id, DEFAULT_USER_ID]);
 };
-

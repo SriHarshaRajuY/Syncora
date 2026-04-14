@@ -141,8 +141,8 @@ export function BookingPage() {
       <div className="booking-layout booking-layout-refined">
         <section className="booking-summary-panel">
           <div className="summary-brand">
-            <span className="brand-mark small">C</span>
-            <span>Calendar Flow</span>
+            <span className="brand-mark small">S</span>
+            <span>Syncora</span>
           </div>
           <p className="eyebrow">{rescheduleToken ? 'Reschedule' : 'Event details'}</p>
           <h2>{eventType?.name || 'Loading...'}</h2>

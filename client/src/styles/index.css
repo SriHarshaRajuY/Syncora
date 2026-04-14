@@ -500,6 +500,16 @@ img {
   gap: 18px;
 }
 
+.public-directory {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+
+.public-directory-card {
+  min-height: 100%;
+}
+
 .public-event-header,
 .event-card-title {
   display: flex;
