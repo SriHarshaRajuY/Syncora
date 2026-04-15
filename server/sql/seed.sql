@@ -1,4 +1,4 @@
-USE scaler_scheduler;
+USE railway;
 
 INSERT INTO users (id, name, email, timezone)
 VALUES (1, 'Aarav Sharma', 'aarav@example.com', 'Asia/Kolkata')

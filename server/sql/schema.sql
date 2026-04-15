@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS scaler_scheduler;
-USE scaler_scheduler;
+CREATE DATABASE IF NOT EXISTS railway;
+USE railway;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
