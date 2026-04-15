@@ -1,145 +1,254 @@
-# Syncora Scheduling Platform
+# 🚀 Syncora — Calendly Clone Scheduling Platform
 
-A full-stack Calendly-inspired scheduling platform built with React, Node.js, Express, and MySQL
+A full-stack scheduling and booking application.
 
-## What is implemented
+Syncora allows users to create event types, define availability, and share public booking links where invitees can schedule meetings seamlessly.
 
-- Event type CRUD with unique public booking links
-- Weekly availability schedules with timezone support
-- Multiple schedules and per-event schedule assignment
-- Date-specific override hours
-- Public month calendar booking flow
-- Available slot generation with buffer time support
-- Double-booking prevention with transactional overlap checks
-- Invitee booking form with custom questions
-- Booking confirmation page
-- Upcoming and past meetings dashboard
-- Meeting cancellation flow
-- Meeting rescheduling flow with reusable public reschedule link
-- Booking and cancellation email hooks via SMTP
-- Responsive admin and booking UI
-- MySQL schema plus sample seed data
-- Deployment-ready setup for a single backend-hosted app
+---
 
-## Tech stack
+## 🌐 Live Demo
 
-- Frontend: React + Vite + React Router
-- Backend: Node.js + Express
-- Database: MySQL
-- Utilities: `dayjs`, `mysql2`, `nodemailer`
+* 🔗 Frontend: *(Add your deployed link here)*
+* 🔗 Backend API: *(Add your deployed link here)*
 
-## Project structure
+---
 
-```text
-client/   React frontend
-server/   Express API + MySQL integration
-server/sql/schema.sql
-server/sql/seed.sql
-```
+## 🛠️ Tech Stack
 
-## Step-by-step local setup
+### Frontend
 
-1. Install MySQL 8+ and create a database user with permission to create databases.
-2. Copy `server/.env.example` to `server/.env`.
-3. Copy `client/.env.example` to `client/.env`.
-4. Update the MySQL values in `server/.env`.
-5. From the project root, install dependencies:
+* React.js (Vite)
+* React Router
+* CSS (Custom Styling)
+
+### Backend
+
+* Node.js
+* Express.js
+* MySQL (mysql2)
+
+### Other Tools
+
+* Nodemailer (Email notifications)
+* Day.js (Date & Time handling)
+* dotenv (Environment variables)
+
+---
+
+## ✨ Features
+
+### ✅ Core Features
+
+#### 1. Event Types Management
+
+* Create, edit, delete event types
+* Unique public booking links (slug-based)
+* Custom duration, buffer time, location
+* Custom invitee questions
+
+#### 2. Availability Scheduling
+
+* Weekly availability (Mon–Sun)
+* Time slots (e.g., 9 AM – 5 PM)
+* Timezone support
+* Date-specific overrides (holidays/custom timings)
+
+#### 3. Public Booking Flow
+
+* Month calendar view
+* Dynamic available slots
+* Booking form (name, email, custom questions)
+* Prevents double booking
+* Booking confirmation page
+
+#### 4. Meetings Management
+
+* View upcoming meetings
+* View past meetings
+* Cancel meetings
+* Reschedule via token-based link
+
+---
+
+### ⭐ Bonus Features
+
+* Multiple availability schedules
+* Buffer time before/after meetings
+* Rescheduling flow
+* Email notifications (Nodemailer)
+* Responsive UI (mobile + desktop)
+* Clean Calendly-inspired UI/UX
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. Clone Repository
 
 ```bash
-npm install --workspaces
+git clone https://github.com/SriHarshaRajuY/syncora.git
+cd syncora
 ```
 
-6. Seed the database:
+---
+
+### 2. Backend Setup
 
 ```bash
-npm run seed
+cd server
+npm install
 ```
 
-7. Start the backend and frontend together:
+#### Create `.env` file:
 
-```bash
-npm run dev
-```
-
-8. Open:
-
-- Admin dashboard: `http://localhost:5173/events`
-- Public booking sample: `http://localhost:5173/book/intro-call`
-
-## Useful scripts
-
-```bash
-npm run dev
-npm run build
-npm run start
-npm run seed
-```
-
-## Environment variables
-
-### Server
-
-```bash
+```env
 PORT=4000
 CLIENT_ORIGIN=http://localhost:5173
+
 DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=scaler_scheduler
 DB_USER=root
-DB_PASSWORD=your_mysql_password
+DB_PASSWORD=your_password
+
 DEFAULT_TIMEZONE=Asia/Kolkata
 APP_BASE_URL=http://localhost:5173
-SMTP_HOST=
+
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=
-SMTP_PASS=
-SMTP_FROM=Scheduler Clone <no-reply@example.com>
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+SMTP_FROM=Syncora Scheduler <your_email@gmail.com>
 ```
 
-### Client
+---
+
+### ⚠️ Gmail Setup (Important)
+
+To enable email notifications:
+
+1. Enable **2-Step Verification**
+2. Generate **App Password**
+3. Use that password in `SMTP_PASS`
+
+---
+
+### 3. Database Setup
+
+Run:
 
 ```bash
+node src/db/seed.js
+```
+
+This will:
+
+* Create tables
+* Insert sample data
+
+---
+
+### 4. Start Backend
+
+```bash
+npm run dev
+```
+
+Server runs at:
+
+```
+http://localhost:4000
+```
+
+---
+
+### 5. Frontend Setup
+
+```bash
+cd ../client
+npm install
+```
+
+#### Create `.env` file:
+
+```env
 VITE_API_BASE_URL=http://localhost:4000/api
 ```
 
-## Deployment recommendation
+---
 
-The cleanest submission path is:
+### 6. Start Frontend
 
-1. Push this repository to GitHub.
-2. Create a MySQL database on Railway, PlanetScale, Aiven, or Render.
-3. Deploy the full app as one service on Render or Railway:
-   - Build command: `npm install --workspaces && npm run build`
-   - Start command: `npm run start`
-4. Add the `server/.env` values in the deployment dashboard.
-5. Run `npm run seed` once against the deployed database, or import `server/sql/schema.sql` and `server/sql/seed.sql`.
+```bash
+npm run dev
+```
 
-Because the Express server serves `client/dist` when it exists, you can deploy the UI and API together as one app.
+App runs at:
 
-## Submission checklist
+```
+http://localhost:5173
+```
 
-1. Record a few screenshots or a short demo video before submitting.
-2. Make sure seed data is present on the deployed URL.
-3. Test these flows manually:
-   - Create, edit, and delete event types
-   - Create and edit schedules
-   - Book an event
-   - Reschedule a booking
-   - Cancel a meeting
-   - Check responsive layout on mobile width
-4. Push to a public GitHub repository.
-5. Submit both the GitHub link and deployed link.
+---
 
-## Interview prep points
+## 🔗 API Endpoints
 
-- Explain how schedules, rules, overrides, event types, and meetings relate in the schema.
-- Explain how slot generation works for a given date.
-- Explain how buffers affect availability.
-- Explain the transactional overlap check that prevents double booking.
-- Explain why the reschedule flow uses a reusable token.
+### Event Types
 
-## Assumptions
+* `GET /api/event-types`
+* `POST /api/event-types`
+* `PUT /api/event-types/:id`
+* `DELETE /api/event-types/:id`
 
-- A single default admin user is assumed to be logged in.
-- All admin flows operate on user id `1`.
-- Email sending is optional in local development and becomes active only when SMTP credentials are provided.
+### Availability
+
+* `GET /api/availability/schedules`
+* `POST /api/availability/schedules`
+
+### Meetings
+
+* `GET /api/meetings`
+* `POST /api/meetings/public/event-types/:slug/book`
+* `POST /api/meetings/:id/cancel`
+
+---
+
+## 🧠 Key Concepts Implemented
+
+* 🔄 Transaction handling (MySQL)
+* 🔐 Row locking (`FOR UPDATE`) to prevent double booking
+* ⏱️ Timezone-aware scheduling
+* 📅 Slot generation algorithm
+* 📩 Email integration using Nodemailer
+* 🧩 Modular architecture (MVC + Services)
+
+---
+
+## 🚫 Assumptions
+
+* Single default user (no authentication)
+* Email notifications depend on SMTP configuration
+* Public booking pages are accessible without login
+
+---
+
+## 📈 Future Improvements
+
+* Authentication (JWT / OAuth)
+* Google Calendar integration
+* Stripe payments
+* Team scheduling (multi-user)
+* Webhooks
+
+---
+
+## ⭐ Final Note
+
+This project demonstrates full-stack development skills including:
+
+* System design
+* Backend architecture
+* UI/UX implementation
+* Real-world problem solving (scheduling + concurrency)
+
+---
