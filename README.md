@@ -1,6 +1,6 @@
 # Syncora Scheduling Platform
 
-A full-stack Calendly-inspired scheduling platform built with React, Node.js, Express, and MySQL for the Scaler AI Labs SDE Intern fullstack assignment.
+A full-stack Calendly-inspired scheduling platform built with React, Node.js, Express, and MySQL
 
 ## What is implemented
 
