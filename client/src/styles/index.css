@@ -1197,3 +1197,202 @@ img {
   margin-left: 4px;
   font-weight: bold;
 }
+
+/* Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top: 4px solid #006bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  z-index: 999;
+}
+
+.toast.success {
+  background: #e6fffa;
+  color: #065f46;
+  border: 1px solid #34d399;
+}
+
+/* ========================= */
+/* ✨ UI POLISH (Calendly-like) */
+/* ========================= */
+
+/* Smooth global transitions */
+* {
+  transition: all 0.2s ease;
+}
+
+/* Button hover polish */
+.primary-button:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 16px 30px rgba(0, 107, 255, 0.3);
+}
+
+.secondary-button:hover {
+  background: #e0ecff;
+}
+
+.ghost-button:hover {
+  background: rgba(0, 107, 255, 0.06);
+}
+
+/* Card hover effect */
+.public-event-card:hover,
+.event-card:hover,
+.schedule-card:hover,
+.stat-card:hover,
+.feature-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+}
+
+/* Input focus upgrade */
+input:focus,
+select:focus,
+textarea:focus {
+  transform: scale(1.01);
+}
+
+/* Better scrollbar (modern look) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c7d7ec;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Toast animation */
+.toast {
+  animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px) translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Loading screen polish */
+.loading-screen {
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* Spinner smoother */
+.spinner {
+  box-shadow: 0 0 20px rgba(0, 107, 255, 0.15);
+}
+
+/* Calendar day hover */
+.day-cell:hover:not(:disabled) {
+  background: #f0f6ff;
+  border-color: var(--brand);
+}
+
+/* Slot hover */
+.slot-button:hover {
+  background: #eef5ff;
+  border-color: var(--brand);
+}
+
+/* Navbar polish */
+.site-header-inner {
+  transition: all 0.3s ease;
+}
+
+.site-header-inner:hover {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Hero animation smoothness */
+.hero-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 70px rgba(15, 23, 42, 0.15);
+}
+
+/* Section fade-in animation */
+.feature-panel,
+.public-event-card,
+.stat-card {
+  animation: fadeUp 0.6s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Improve form spacing */
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+  transition: all 0.2s ease;
+}
+
+/* Subtle glass effect (Calendly-like) */
+.modal-card,
+.booking-layout-refined {
+  backdrop-filter: blur(12px);
+}
+
+/* Tag hover */
+.tag:hover {
+  background: #e0ecff;
+  color: var(--brand-strong);
+}
+
+/* Better focus accessibility */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* Slight zoom effect for clickable items */
+a:hover {
+  opacity: 0.9;
+}
