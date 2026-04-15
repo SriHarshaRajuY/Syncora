@@ -249,6 +249,7 @@ export function EventTypeForm({ initialValue, schedules, onSubmit, onCancel }) {
             <div>
               <p className="eyebrow">Invitee questions</p>
               <h4>Custom booking questions</h4>
+              <p className="drawer-section-copy">Collect context before the meeting with short or long-form prompts.</p>
             </div>
             <button className="secondary-button" type="button" onClick={addQuestion}>
               Add question
@@ -257,27 +258,38 @@ export function EventTypeForm({ initialValue, schedules, onSubmit, onCancel }) {
 
           <div className="drawer-stack">
             {form.inviteeQuestions.map((question, index) => (
-              <div className="question-row carded" key={`${question.label}-${index}`}>
-                <input
-                  value={question.label}
-                  onChange={(event) => updateQuestion(index, 'label', event.target.value)}
-                  placeholder="Question prompt"
-                />
-                <select value={question.type} onChange={(event) => updateQuestion(index, 'type', event.target.value)}>
-                  <option value="text">Short text</option>
-                  <option value="textarea">Long answer</option>
-                </select>
-                <label className="checkbox-inline">
+              <div className="question-card carded" key={`${question.label}-${index}`}>
+                <label className="drawer-field question-prompt-field">
+                  <span>Question prompt</span>
                   <input
-                    type="checkbox"
-                    checked={question.required}
-                    onChange={(event) => updateQuestion(index, 'required', event.target.checked)}
+                    value={question.label}
+                    onChange={(event) => updateQuestion(index, 'label', event.target.value)}
+                    placeholder="What would you like to discuss?"
                   />
-                  Required
                 </label>
-                <button className="ghost-button" type="button" onClick={() => removeQuestion(index)}>
-                  Remove
-                </button>
+
+                <div className="question-card-footer">
+                  <label className="drawer-field compact question-type-field">
+                    <span>Answer type</span>
+                    <select value={question.type} onChange={(event) => updateQuestion(index, 'type', event.target.value)}>
+                      <option value="text">Short text</option>
+                      <option value="textarea">Long answer</option>
+                    </select>
+                  </label>
+
+                  <label className="checkbox-inline question-required-toggle">
+                    <input
+                      type="checkbox"
+                      checked={question.required}
+                      onChange={(event) => updateQuestion(index, 'required', event.target.checked)}
+                    />
+                    Required
+                  </label>
+
+                  <button className="ghost-button" type="button" onClick={() => removeQuestion(index)}>
+                    Remove
+                  </button>
+                </div>
               </div>
             ))}
           </div>

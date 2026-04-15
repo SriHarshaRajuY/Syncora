@@ -73,9 +73,15 @@ export function PublicEventTypesPage() {
               </div>
             </article>
           ))}
+
+          {!eventTypes.length ? (
+            <article className="empty-state-card public-directory-card">
+              <h3>No public event types yet</h3>
+              <p>Activate an event type in the dashboard to publish a booking link here.</p>
+            </article>
+          ) : null}
         </div>
       </section>
     </div>
   );
 }
-

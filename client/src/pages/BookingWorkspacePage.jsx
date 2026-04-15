@@ -66,7 +66,7 @@ export function BookingPage() {
         }
       })
       .catch((err) => setError(err.message));
-  }, [slug, month, meetingToReschedule?.id, selectedDate]);
+  }, [slug, month, meetingToReschedule?.id]);
 
   useEffect(() => {
     if (!selectedDate) {
@@ -83,7 +83,7 @@ export function BookingPage() {
         }
       })
       .catch((err) => setError(err.message));
-  }, [slug, selectedDate, meetingToReschedule?.id, selectedStart]);
+  }, [slug, selectedDate, meetingToReschedule?.id]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
