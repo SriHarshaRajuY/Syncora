@@ -34,6 +34,14 @@ ON DUPLICATE KEY UPDATE
   end_time = VALUES(end_time),
   reason = VALUES(reason);
 
+INSERT INTO availability_settings (user_id, max_meetings_per_day, max_meetings_per_week, holiday_country, auto_block_holidays)
+VALUES (1, 4, 12, 'India', FALSE)
+ON DUPLICATE KEY UPDATE
+  max_meetings_per_day = VALUES(max_meetings_per_day),
+  max_meetings_per_week = VALUES(max_meetings_per_week),
+  holiday_country = VALUES(holiday_country),
+  auto_block_holidays = VALUES(auto_block_holidays);
+
 INSERT INTO event_types (
   id, user_id, schedule_id, name, slug, duration_minutes, color, description, location,
   buffer_before_minutes, buffer_after_minutes, invitee_questions, is_active
@@ -99,4 +107,3 @@ ON DUPLICATE KEY UPDATE
   timezone = VALUES(timezone),
   status = VALUES(status),
   reschedule_token = VALUES(reschedule_token);
-

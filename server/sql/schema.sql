@@ -41,6 +41,17 @@ CREATE TABLE IF NOT EXISTS availability_overrides (
   CONSTRAINT fk_override_schedule FOREIGN KEY (schedule_id) REFERENCES availability_schedules(id) ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS availability_settings (
+  user_id INT PRIMARY KEY,
+  max_meetings_per_day INT NULL,
+  max_meetings_per_week INT NULL,
+  holiday_country VARCHAR(80) NOT NULL DEFAULT 'India',
+  auto_block_holidays BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_availability_settings_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS event_types (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -81,4 +92,3 @@ CREATE TABLE IF NOT EXISTS meetings (
 
 CREATE INDEX idx_rules_schedule_day ON availability_rules(schedule_id, day_of_week);
 CREATE INDEX idx_meetings_lookup ON meetings(event_type_id, start_at, status);
-

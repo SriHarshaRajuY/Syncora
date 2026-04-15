@@ -13,10 +13,11 @@ export function AdminShell({
   children,
   quickActionLabel = 'Create',
   quickActionTo = '/events',
-  onQuickAction
+  onQuickAction,
+  drawer
 }) {
   return (
-    <div className="admin-app">
+    <div className={`admin-app ${drawer ? 'has-drawer' : ''}`}>
       <aside className="cal-sidebar">
         <Link className="cal-logo" to="/">
           <span className="brand-mark">S</span>
@@ -64,6 +65,8 @@ export function AdminShell({
           {children}
         </main>
       </section>
+
+      {drawer ? <aside className="cal-drawer-shell">{drawer}</aside> : null}
     </div>
   );
 }

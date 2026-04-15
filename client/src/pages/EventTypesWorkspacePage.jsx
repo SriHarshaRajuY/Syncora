@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { api } from '../api/client.js';
 import { AdminShell } from '../components/AdminShell.jsx';
 import { EventTypeForm } from '../components/EventTypeForm.jsx';
-import { Modal } from '../components/Modal.jsx';
 
 export function EventTypesPage() {
   const [eventTypes, setEventTypes] = useState([]);
@@ -83,6 +82,16 @@ export function EventTypesPage() {
         <button className="primary-button" onClick={() => setSelectedEvent({})}>
           + Create
         </button>
+      }
+      drawer={
+        selectedEvent ? (
+          <EventTypeForm
+            initialValue={selectedEvent.id ? selectedEvent : null}
+            schedules={schedules}
+            onSubmit={handleSave}
+            onCancel={() => setSelectedEvent(null)}
+          />
+        ) : null
       }
     >
       {error ? <div className="banner error">{error}</div> : null}
@@ -172,17 +181,6 @@ export function EventTypesPage() {
           </div>
         ) : null}
       </section>
-
-      {selectedEvent ? (
-        <Modal title={selectedEvent.id ? 'Edit event type' : 'Create event type'} onClose={() => setSelectedEvent(null)}>
-          <EventTypeForm
-            initialValue={selectedEvent.id ? selectedEvent : null}
-            schedules={schedules}
-            onSubmit={handleSave}
-            onCancel={() => setSelectedEvent(null)}
-          />
-        </Modal>
-      ) : null}
     </AdminShell>
   );
 }

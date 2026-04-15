@@ -101,114 +101,139 @@ const toggleRule = (dayOfWeek, checked) => {
   };
 
   return (
-    <form className="form-grid" onSubmit={handleSubmit}>
-      <label>
-        <span>Name</span>
-        <input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} />
-      </label>
-
-      <label>
-        <span>Timezone</span>
-        <input
-          value={form.timezone}
-          onChange={(event) => setForm((current) => ({ ...current, timezone: event.target.value }))}
-          placeholder="Asia/Kolkata"
-        />
-      </label>
-
-      <label className="checkbox-inline">
-        <input
-          type="checkbox"
-          checked={form.isDefault}
-          onChange={(event) => setForm((current) => ({ ...current, isDefault: event.target.checked }))}
-        />
-        Make this the default schedule
-      </label>
-
-      <div className="full-width schedule-grid">
-        {week.map((day) => {
-          const rule = form.rules.find((item) => item.dayOfWeek === day.value);
-          return (
-            <div className="schedule-row" key={day.value}>
-              <label className="checkbox-inline">
-                <input type="checkbox" checked={Boolean(rule)} onChange={(event) => toggleRule(day.value, event.target.checked)} />
-                {day.label}
-              </label>
-              {rule ? (
-                <div className="time-range">
-                  <input
-                    type="time"
-                    value={rule.startTime.slice(0, 5)}
-                    onChange={(event) => handleRuleChange(day.value, 'startTime', `${event.target.value}:00`)}
-                  />
-                  <span>to</span>
-                  <input
-                    type="time"
-                    value={rule.endTime.slice(0, 5)}
-                    onChange={(event) => handleRuleChange(day.value, 'endTime', `${event.target.value}:00`)}
-                  />
-                </div>
-              ) : (
-                <span className="muted-text">Unavailable</span>
-              )}
-            </div>
-          );
-        })}
+    <form className="drawer-form" onSubmit={handleSubmit}>
+      <div className="drawer-form-header">
+        <div>
+          <p className="eyebrow">Schedule</p>
+          <h2>{form.name || 'New schedule'}</h2>
+          <span className="drawer-form-subtitle">{form.timezone}</span>
+        </div>
+        <button className="ghost-button icon-close" type="button" onClick={onCancel}>
+          Close
+        </button>
       </div>
 
-      <div className="full-width question-builder">
-        <div className="section-row">
-          <div>
-            <p className="eyebrow">Date-specific hours</p>
-            <h4>Overrides</h4>
-          </div>
-          <button className="secondary-button" type="button" onClick={addOverride}>
-            Add override
-          </button>
-        </div>
-
-        {form.overrides.map((overrideItem, index) => (
-          <div className="override-row" key={`${overrideItem.overrideDate}-${index}`}>
-            <input
-              type="date"
-              value={overrideItem.overrideDate}
-              onChange={(event) => updateOverride(index, 'overrideDate', event.target.value)}
-            />
-            <label className="checkbox-inline">
-              <input
-                type="checkbox"
-                checked={overrideItem.isAvailable}
-                onChange={(event) => updateOverride(index, 'isAvailable', event.target.checked)}
-              />
-              Available
+      <div className="drawer-form-body">
+        <section className="drawer-section">
+          <div className="drawer-grid">
+            <label className="drawer-field">
+              <span>Name</span>
+              <input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} />
             </label>
-            {overrideItem.isAvailable ? (
-              <>
-                <input
-                  type="time"
-                  value={overrideItem.startTime.slice(0, 5)}
-                  onChange={(event) => updateOverride(index, 'startTime', `${event.target.value}:00`)}
-                />
-                <input
-                  type="time"
-                  value={overrideItem.endTime.slice(0, 5)}
-                  onChange={(event) => updateOverride(index, 'endTime', `${event.target.value}:00`)}
-                />
-              </>
-            ) : null}
+
+            <label className="drawer-field">
+              <span>Timezone</span>
+              <input
+                value={form.timezone}
+                onChange={(event) => setForm((current) => ({ ...current, timezone: event.target.value }))}
+                placeholder="Asia/Kolkata"
+              />
+            </label>
+          </div>
+
+          <label className="checkbox-inline drawer-checkbox">
             <input
-              value={overrideItem.reason}
-              onChange={(event) => updateOverride(index, 'reason', event.target.value)}
-              placeholder="Reason"
+              type="checkbox"
+              checked={form.isDefault}
+              onChange={(event) => setForm((current) => ({ ...current, isDefault: event.target.checked }))}
             />
-            <button className="ghost-button" type="button" onClick={() => removeOverride(index)}>
-              Remove
+            Make this the default schedule
+          </label>
+        </section>
+
+        <section className="drawer-section">
+          <div className="drawer-section-header">
+            <h3>Weekly hours</h3>
+          </div>
+
+          <div className="schedule-grid refined">
+            {week.map((day) => {
+              const rule = form.rules.find((item) => item.dayOfWeek === day.value);
+              return (
+                <div className="schedule-row refined" key={day.value}>
+                  <label className="checkbox-inline">
+                    <input type="checkbox" checked={Boolean(rule)} onChange={(event) => toggleRule(day.value, event.target.checked)} />
+                    {day.label}
+                  </label>
+                  {rule ? (
+                    <div className="time-range">
+                      <input
+                        type="time"
+                        value={rule.startTime.slice(0, 5)}
+                        onChange={(event) => handleRuleChange(day.value, 'startTime', `${event.target.value}:00`)}
+                      />
+                      <span>to</span>
+                      <input
+                        type="time"
+                        value={rule.endTime.slice(0, 5)}
+                        onChange={(event) => handleRuleChange(day.value, 'endTime', `${event.target.value}:00`)}
+                      />
+                    </div>
+                  ) : (
+                    <span className="muted-text">Unavailable</span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="drawer-section">
+          <div className="section-row">
+            <div>
+              <p className="eyebrow">Date-specific hours</p>
+              <h4>Overrides</h4>
+            </div>
+            <button className="secondary-button" type="button" onClick={addOverride}>
+              Add override
             </button>
           </div>
-        ))}
+
+          <div className="drawer-stack">
+            {form.overrides.map((overrideItem, index) => (
+              <div className="override-row carded" key={`${overrideItem.overrideDate}-${index}`}>
+                <input
+                  type="date"
+                  value={overrideItem.overrideDate}
+                  onChange={(event) => updateOverride(index, 'overrideDate', event.target.value)}
+                />
+                <label className="checkbox-inline">
+                  <input
+                    type="checkbox"
+                    checked={overrideItem.isAvailable}
+                    onChange={(event) => updateOverride(index, 'isAvailable', event.target.checked)}
+                  />
+                  Available
+                </label>
+                {overrideItem.isAvailable ? (
+                  <>
+                    <input
+                      type="time"
+                      value={overrideItem.startTime.slice(0, 5)}
+                      onChange={(event) => updateOverride(index, 'startTime', `${event.target.value}:00`)}
+                    />
+                    <input
+                      type="time"
+                      value={overrideItem.endTime.slice(0, 5)}
+                      onChange={(event) => updateOverride(index, 'endTime', `${event.target.value}:00`)}
+                    />
+                  </>
+                ) : null}
+                <input
+                  value={overrideItem.reason}
+                  onChange={(event) => updateOverride(index, 'reason', event.target.value)}
+                  placeholder="Reason"
+                />
+                <button className="ghost-button" type="button" onClick={() => removeOverride(index)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
 
-      <div className="form-actions full-width">
+      <div className="drawer-form-footer">
         <button className="ghost-button" type="button" onClick={onCancel}>
           Cancel
         </button>

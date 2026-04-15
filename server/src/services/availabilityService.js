@@ -18,6 +18,13 @@ import { getEventTypeBySlug } from './eventTypeService.js';
 
 const SLOT_INCREMENT = 30;
 
+const DEFAULT_ADVANCED_SETTINGS = {
+  maxMeetingsPerDay: 4,
+  maxMeetingsPerWeek: 12,
+  holidayCountry: 'India',
+  autoBlockHolidays: false
+};
+
 const sortRules = (rules) => [...rules].sort((a, b) => a.startTime.localeCompare(b.startTime));
 
 const mapSchedule = (schedule, rules = [], overrides = []) => ({
@@ -29,6 +36,100 @@ const mapSchedule = (schedule, rules = [], overrides = []) => ({
     overrideDate: String(item.override_date)
   }))
 });
+
+const mapAdvancedSettings = (row) => {
+  if (!row) {
+    return { ...DEFAULT_ADVANCED_SETTINGS };
+  }
+
+  const item = mapRow(row);
+  return {
+    maxMeetingsPerDay: item.maxMeetingsPerDay ? Number(item.maxMeetingsPerDay) : null,
+    maxMeetingsPerWeek: item.maxMeetingsPerWeek ? Number(item.maxMeetingsPerWeek) : null,
+    holidayCountry: item.holidayCountry || DEFAULT_ADVANCED_SETTINGS.holidayCountry,
+    autoBlockHolidays: Boolean(item.autoBlockHolidays)
+  };
+};
+
+const normalizeLimit = (value) => {
+  if (value === '' || value === null || value === undefined) {
+    return null;
+  }
+
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+};
+
+const getNthWeekdayOfMonth = (year, month, weekday, occurrence) => {
+  let cursor = dayjs(`${year}-${String(month).padStart(2, '0')}-01`);
+
+  while (cursor.day() !== weekday) {
+    cursor = cursor.add(1, 'day');
+  }
+
+  return cursor.add(occurrence - 1, 'week').format('YYYY-MM-DD');
+};
+
+const getHolidayCatalog = (country, year) => {
+  const catalogs = {
+    India: [
+      { date: `${year}-01-01`, label: "New Year's Day" },
+      { date: `${year}-01-26`, label: 'Republic Day' },
+      { date: `${year}-08-15`, label: 'Independence Day' },
+      { date: `${year}-10-02`, label: 'Gandhi Jayanti' },
+      { date: `${year}-12-25`, label: 'Christmas Day' }
+    ],
+    'United States': [
+      { date: `${year}-01-01`, label: "New Year's Day" },
+      { date: `${year}-07-04`, label: 'Independence Day' },
+      { date: `${year}-11-11`, label: 'Veterans Day' },
+      { date: getNthWeekdayOfMonth(year, 11, 4, 4), label: 'Thanksgiving' },
+      { date: `${year}-12-25`, label: 'Christmas Day' }
+    ]
+  };
+
+  return catalogs[country] || [];
+};
+
+const getHolidayLabel = (date, country) => {
+  const year = Number(date.slice(0, 4));
+  const holiday = getHolidayCatalog(country, year).find((item) => item.date === date);
+  return holiday?.label || null;
+};
+
+const countMeetingsInRange = async ({ start, end, ignoreMeetingId, connection }) => {
+  const runner = connection || pool;
+  const params = [DEFAULT_USER_ID, formatDateTime(start), formatDateTime(end)];
+  const exclusionSql = ignoreMeetingId ? 'AND m.id <> ?' : '';
+
+  if (ignoreMeetingId) {
+    params.push(Number(ignoreMeetingId));
+  }
+
+  const [rows] = await runner.query(
+    `
+      SELECT COUNT(*) AS total
+      FROM meetings m
+      INNER JOIN event_types et ON et.id = m.event_type_id
+      WHERE et.user_id = ?
+        AND m.status = 'scheduled'
+        AND m.start_at >= ?
+        AND m.start_at < ?
+        ${exclusionSql}
+    `,
+    params
+  );
+
+  return Number(rows[0]?.total || 0);
+};
+
+const getWeekWindowInTimezone = (date, timezoneName) => {
+  const start = dayjs.tz(`${date}T00:00:00`, timezoneName).startOf('week');
+  return {
+    start,
+    end: start.add(1, 'week')
+  };
+};
 
 export const listSchedules = async () => {
   const [schedules] = await pool.query(
@@ -67,6 +168,41 @@ export const getSchedule = async (scheduleId) => {
   }
 
   return selected;
+};
+
+export const getAdvancedSettings = async () => {
+  const [rows] = await pool.query('SELECT * FROM availability_settings WHERE user_id = ? LIMIT 1', [DEFAULT_USER_ID]);
+  return mapAdvancedSettings(rows[0]);
+};
+
+export const updateAdvancedSettings = async (payload) => {
+  const normalized = {
+    maxMeetingsPerDay: normalizeLimit(payload.maxMeetingsPerDay),
+    maxMeetingsPerWeek: normalizeLimit(payload.maxMeetingsPerWeek),
+    holidayCountry: payload.holidayCountry || DEFAULT_ADVANCED_SETTINGS.holidayCountry,
+    autoBlockHolidays: Boolean(payload.autoBlockHolidays)
+  };
+
+  await pool.query(
+    `
+      INSERT INTO availability_settings (user_id, max_meetings_per_day, max_meetings_per_week, holiday_country, auto_block_holidays)
+      VALUES (?, ?, ?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+        max_meetings_per_day = VALUES(max_meetings_per_day),
+        max_meetings_per_week = VALUES(max_meetings_per_week),
+        holiday_country = VALUES(holiday_country),
+        auto_block_holidays = VALUES(auto_block_holidays)
+    `,
+    [
+      DEFAULT_USER_ID,
+      normalized.maxMeetingsPerDay,
+      normalized.maxMeetingsPerWeek,
+      normalized.holidayCountry,
+      normalized.autoBlockHolidays
+    ]
+  );
+
+  return getAdvancedSettings();
 };
 
 const getDefaultSchedule = async () => {
@@ -243,9 +379,70 @@ const listBusyMeetings = async (schedule, date) => {
   }));
 };
 
+export const getAdvancedAvailabilityState = async ({ date, schedule, ignoreMeetingId, connection }) => {
+  const settings = await getAdvancedSettings();
+  const state = {
+    settings,
+    holidayLabel: null,
+    dailyLimitReached: false,
+    weeklyLimitReached: false
+  };
+
+  if (settings.autoBlockHolidays) {
+    state.holidayLabel = getHolidayLabel(date, settings.holidayCountry);
+  }
+
+  if (settings.maxMeetingsPerDay) {
+    const dayWindow = getDayWindowInTimezone(date, schedule.timezone);
+    const dailyCount = await countMeetingsInRange({
+      start: dayWindow.start,
+      end: dayWindow.end,
+      ignoreMeetingId,
+      connection
+    });
+    state.dailyLimitReached = dailyCount >= settings.maxMeetingsPerDay;
+  }
+
+  if (settings.maxMeetingsPerWeek) {
+    const weekWindow = getWeekWindowInTimezone(date, schedule.timezone);
+    const weeklyCount = await countMeetingsInRange({
+      start: weekWindow.start,
+      end: weekWindow.end,
+      ignoreMeetingId,
+      connection
+    });
+    state.weeklyLimitReached = weeklyCount >= settings.maxMeetingsPerWeek;
+  }
+
+  return state;
+};
+
+export const assertDateBookableWithAdvancedSettings = async (options) => {
+  const state = await getAdvancedAvailabilityState(options);
+
+  if (state.holidayLabel) {
+    throw new AppError(`${state.holidayLabel} is blocked in advanced availability settings.`, 409);
+  }
+
+  if (state.dailyLimitReached) {
+    throw new AppError('The daily meeting limit has been reached for this date.', 409);
+  }
+
+  if (state.weeklyLimitReached) {
+    throw new AppError('The weekly meeting limit has been reached for this week.', 409);
+  }
+
+  return state;
+};
+
 const buildSlots = async ({ eventType, schedule, date, ignoreMeetingId }) => {
   const windows = getDailyWindows(schedule, date);
   if (!windows.length) {
+    return [];
+  }
+
+  const advancedState = await getAdvancedAvailabilityState({ date, schedule, ignoreMeetingId });
+  if (advancedState.holidayLabel || advancedState.dailyLimitReached || advancedState.weeklyLimitReached) {
     return [];
   }
 

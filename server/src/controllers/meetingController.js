@@ -1,5 +1,13 @@
 import { asyncHandler } from '../utils/errors.js';
-import { cancelMeeting, cancelMeetingByToken, createBooking, getMeetingByToken, getMeetingPublicById, listMeetings, rescheduleMeetingByToken } from '../services/meetingService.js';
+import {
+  cancelMeeting,
+  cancelMeetingByToken,
+  createBooking,
+  getMeetingByToken,
+  getMeetingPublicById,
+  listMeetings,
+  rescheduleMeetingByToken
+} from '../services/meetingServiceFixed.js';
 import { getEventTypeBySlug, listPublicEventTypes } from '../services/eventTypeService.js';
 
 export const getMeetings = asyncHandler(async (req, res) => {

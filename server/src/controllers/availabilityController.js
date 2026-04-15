@@ -1,5 +1,14 @@
 import { asyncHandler } from '../utils/errors.js';
-import { createSchedule, deleteSchedule, getAvailabilitySummary, getSlotsForDate, listSchedules, updateSchedule } from '../services/availabilityService.js';
+import {
+  createSchedule,
+  deleteSchedule,
+  getAdvancedSettings,
+  getAvailabilitySummary,
+  getSlotsForDate,
+  listSchedules,
+  updateAdvancedSettings,
+  updateSchedule
+} from '../services/availabilityService.js';
 
 export const getSchedules = asyncHandler(async (_req, res) => {
   res.json(await listSchedules());
@@ -20,6 +29,14 @@ export const removeSchedule = asyncHandler(async (req, res) => {
   res.status(204).send();
 });
 
+export const getAvailabilitySettings = asyncHandler(async (_req, res) => {
+  res.json(await getAdvancedSettings());
+});
+
+export const putAvailabilitySettings = asyncHandler(async (req, res) => {
+  res.json(await updateAdvancedSettings(req.body));
+});
+
 export const getMonthAvailability = asyncHandler(async (req, res) => {
   const data = await getAvailabilitySummary(req.params.slug, req.query.month, req.query.ignoreMeetingId);
   res.json(data);
@@ -29,4 +46,3 @@ export const getDateSlots = asyncHandler(async (req, res) => {
   const data = await getSlotsForDate(req.params.slug, req.query.date, req.query.ignoreMeetingId);
   res.json(data);
 });
-
