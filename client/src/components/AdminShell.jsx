@@ -45,16 +45,6 @@ export function AdminShell({
             </NavLink>
           ))}
         </nav>
-
-        <div className="cal-sidebar-footer">
-          <div className="cal-plan-card">
-            <strong>Assignment submission</strong>
-            <span>Responsive admin, public booking, and bonus flows are all included.</span>
-          </div>
-          <Link to="/book">Public booking</Link>
-          <Link to="/">Landing page</Link>
-          <span>Help</span>
-        </div>
       </aside>
 
       <section className="cal-main">
@@ -74,24 +64,6 @@ export function AdminShell({
           {children}
         </main>
       </section>
-
-      <aside className="cal-rail">
-        <div className="cal-rail-header">
-          <h3>Get started</h3>
-        </div>
-        <div className="cal-rail-card">
-          <strong>Get to know Syncora</strong>
-          <span>Walk through event creation, availability, and booking flow.</span>
-        </div>
-        <div className="cal-rail-card">
-          <strong>Perfect scheduling setup</strong>
-          <span>Use schedules, overrides, buffers, and custom questions together.</span>
-        </div>
-        <div className="cal-rail-card">
-          <strong>Booking follow-up</strong>
-          <span>Booking confirmation, cancellation, and rescheduling are already wired.</span>
-        </div>
-      </aside>
     </div>
   );
 }

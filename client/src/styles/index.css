@@ -1401,12 +1401,11 @@ a:hover {
 .admin-app {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 320px;
+  grid-template-columns: 260px minmax(0, 1fr);
   background: #ffffff;
 }
 
-.cal-sidebar,
-.cal-rail {
+.cal-sidebar {
   background: #ffffff;
   border-right: 1px solid #dbe4f0;
 }
@@ -1463,33 +1462,6 @@ a:hover {
   color: #0057d9;
 }
 
-.cal-sidebar-footer {
-  margin-top: auto;
-  display: grid;
-  gap: 12px;
-}
-
-.cal-sidebar-footer a,
-.cal-sidebar-footer span {
-  color: #486581;
-  font-weight: 600;
-}
-
-.cal-plan-card {
-  padding: 16px;
-  border-radius: 14px;
-  background: #f8fbff;
-  border: 1px solid #dbe4f0;
-  display: grid;
-  gap: 8px;
-}
-
-.cal-plan-card span {
-  font-size: 0.9rem;
-  font-weight: 500;
-  line-height: 1.5;
-}
-
 .cal-main {
   display: grid;
   grid-template-rows: 72px 1fr;
@@ -1517,7 +1489,7 @@ a:hover {
 }
 
 .cal-page {
-  padding: 34px 40px 44px;
+  padding: 34px 40px 52px;
 }
 
 .cal-page-header {
@@ -1525,7 +1497,7 @@ a:hover {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .cal-page-header h1 {
@@ -1549,38 +1521,12 @@ a:hover {
   gap: 12px;
 }
 
-.cal-tabs {
-  display: flex;
-  align-items: center;
-  gap: 28px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid #dbe4f0;
-}
-
-.cal-tab {
-  min-height: 34px;
-  padding: 0;
-  border: none;
-  background: transparent;
-  border-bottom: 3px solid transparent;
-  border-radius: 0;
-  color: #62748a;
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-.cal-tab.active {
-  color: #17355c;
-  border-bottom-color: #006bff;
-  box-shadow: none;
-}
-
 .cal-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px 0 10px;
+  padding: 0 0 18px;
 }
 
 .cal-search {
@@ -1632,9 +1578,9 @@ a:hover {
 .meetings-shell-card,
 .empty-state-card {
   border: 1px solid #dbe4f0;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #ffffff;
-  box-shadow: none;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.04);
 }
 
 .event-type-row {
@@ -1648,9 +1594,9 @@ a:hover {
 }
 
 .event-type-main {
-  padding: 24px 24px 22px;
+  padding: 26px 26px 24px;
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .event-type-row-top,
@@ -1703,14 +1649,14 @@ a:hover {
   display: grid;
   grid-template-columns: 320px minmax(0, 1fr);
   gap: 22px;
-  padding-top: 22px;
+  padding-top: 8px;
 }
 
 .schedule-index-card,
 .availability-detail-card,
 .meetings-shell-card,
 .empty-state-card {
-  padding: 24px;
+  padding: 26px;
 }
 
 .schedule-index-item {
@@ -1822,25 +1768,63 @@ a:hover {
 }
 
 .meetings-shell-card {
-  margin-top: 24px;
+  margin-top: 8px;
 }
 
 .meetings-controls {
   align-items: center;
 }
 
+.meetings-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meeting-scope-tab {
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid #dbe4f0;
+  background: #ffffff;
+  color: #17355c;
+  font-weight: 700;
+}
+
+.meeting-scope-tab.active {
+  border-color: #7fb0ff;
+  background: #edf4ff;
+  color: #0057d9;
+}
+
 .filter-bar-panel {
-  margin: 22px 0 8px;
+  margin: 24px 0 10px;
+}
+
+.date-range-field {
+  display: grid;
+  gap: 6px;
+  color: #62748a;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.date-range-field input {
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #ffffff;
 }
 
 .meeting-list.refined {
-  margin-top: 12px;
+  margin-top: 18px;
 }
 
 .meeting-card {
   border: 1px solid #dbe4f0;
-  border-radius: 16px;
-  box-shadow: none;
+  border-radius: 18px;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.03);
 }
 
 .meeting-main {
@@ -1870,40 +1854,6 @@ a:hover {
   color: #17355c;
 }
 
-.cal-rail {
-  padding: 0;
-  border-right: none;
-  border-left: 1px solid #dbe4f0;
-}
-
-.cal-rail-header {
-  padding: 18px 26px;
-  border-bottom: 1px solid #dbe4f0;
-}
-
-.cal-rail-header h3 {
-  margin: 0;
-  color: #17355c;
-  font-size: 1.25rem;
-}
-
-.cal-rail-card {
-  padding: 26px;
-  border-bottom: 1px solid #dbe4f0;
-  display: grid;
-  gap: 10px;
-}
-
-.cal-rail-card strong {
-  color: #17355c;
-  font-size: 1.05rem;
-}
-
-.cal-rail-card span {
-  color: #62748a;
-  line-height: 1.55;
-}
-
 .modal-backdrop {
   justify-items: end;
   padding: 0;
@@ -1928,16 +1878,6 @@ a:hover {
   margin: 4px 0 0;
   color: #17355c;
   font-size: 1.7rem;
-}
-
-@media (max-width: 1360px) {
-  .admin-app {
-    grid-template-columns: 250px minmax(0, 1fr);
-  }
-
-  .cal-rail {
-    display: none;
-  }
 }
 
 @media (max-width: 1120px) {
@@ -1965,8 +1905,9 @@ a:hover {
   }
 
   .cal-nav,
-  .cal-sidebar-footer {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  .event-type-row-actions,
+  .meetings-tabs {
+    flex-wrap: wrap;
   }
 
   .cal-main {

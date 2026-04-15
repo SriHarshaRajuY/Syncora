@@ -87,18 +87,6 @@ export function EventTypesPage() {
     >
       {error ? <div className="banner error">{error}</div> : null}
 
-      <section className="cal-tabs" aria-label="Scheduling views">
-        <button className="cal-tab active" type="button">
-          Event types
-        </button>
-        <button className="cal-tab" type="button">
-          Single-use links
-        </button>
-        <button className="cal-tab" type="button">
-          Meeting polls
-        </button>
-      </section>
-
       <section className="cal-toolbar">
         <label className="cal-search">
           <span className="cal-search-icon">Search</span>

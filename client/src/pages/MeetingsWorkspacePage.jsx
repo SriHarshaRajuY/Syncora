@@ -8,9 +8,10 @@ export function MeetingsPage() {
   const [meetings, setMeetings] = useState([]);
   const [error, setError] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [dateFilter, setDateFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [eventFilter, setEventFilter] = useState('all');
+  const [rangeStart, setRangeStart] = useState('');
+  const [rangeEnd, setRangeEnd] = useState('');
 
   const load = async () => {
     try {
@@ -47,21 +48,17 @@ export function MeetingsPage() {
           return false;
         }
 
-        if (dateFilter === 'today' && !meetingDate.isSame(dayjs(), 'day')) {
+        if (rangeStart && meetingDate.isBefore(dayjs(rangeStart), 'day')) {
           return false;
         }
 
-        if (dateFilter === 'week' && !meetingDate.isAfter(dayjs().startOf('week'))) {
-          return false;
-        }
-
-        if (dateFilter === 'month' && !meetingDate.isSame(dayjs(), 'month')) {
+        if (rangeEnd && meetingDate.isAfter(dayjs(rangeEnd), 'day')) {
           return false;
         }
 
         return true;
       }),
-    [meetings, statusFilter, dateFilter, search, eventFilter]
+    [meetings, statusFilter, search, eventFilter, rangeStart, rangeEnd]
   );
 
   const uniqueEvents = [...new Set(meetings.map((meeting) => meeting.eventName))];
@@ -92,19 +89,20 @@ export function MeetingsPage() {
 
       <section className="meetings-shell-card">
         <div className="meetings-controls">
-          <div className="cal-tabs">
+          <div className="meetings-tabs">
             <button
-              className={`cal-tab ${scope === 'upcoming' ? 'active' : ''}`}
+              className={`meeting-scope-tab ${scope === 'upcoming' ? 'active' : ''}`}
               onClick={() => setScope('upcoming')}
               type="button"
             >
               Upcoming
             </button>
-            <button className={`cal-tab ${scope === 'past' ? 'active' : ''}`} onClick={() => setScope('past')} type="button">
+            <button
+              className={`meeting-scope-tab ${scope === 'past' ? 'active' : ''}`}
+              onClick={() => setScope('past')}
+              type="button"
+            >
               Past
-            </button>
-            <button className="cal-tab" type="button">
-              Date range
             </button>
           </div>
 
@@ -125,13 +123,6 @@ export function MeetingsPage() {
             <option value="cancelled">Cancelled</option>
           </select>
 
-          <select value={dateFilter} onChange={(event) => setDateFilter(event.target.value)}>
-            <option value="all">All dates</option>
-            <option value="today">Today</option>
-            <option value="week">This week</option>
-            <option value="month">This month</option>
-          </select>
-
           <select value={eventFilter} onChange={(event) => setEventFilter(event.target.value)}>
             <option value="all">All events</option>
             {uniqueEvents.map((eventName) => (
@@ -140,6 +131,16 @@ export function MeetingsPage() {
               </option>
             ))}
           </select>
+
+          <label className="date-range-field">
+            <span>From</span>
+            <input type="date" value={rangeStart} onChange={(event) => setRangeStart(event.target.value)} />
+          </label>
+
+          <label className="date-range-field">
+            <span>To</span>
+            <input type="date" value={rangeEnd} onChange={(event) => setRangeEnd(event.target.value)} />
+          </label>
         </div>
 
         {filteredMeetings.length ? (

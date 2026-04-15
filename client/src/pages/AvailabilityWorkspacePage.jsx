@@ -82,18 +82,6 @@ export function AvailabilityPage() {
     >
       {error ? <div className="banner error">{error}</div> : null}
 
-      <section className="cal-tabs" aria-label="Availability views">
-        <button className="cal-tab active" type="button">
-          Schedules
-        </button>
-        <button className="cal-tab" type="button">
-          Calendar settings
-        </button>
-        <button className="cal-tab" type="button">
-          Advanced settings
-        </button>
-      </section>
-
       <section className="availability-workspace">
         <aside className="schedule-index-card">
           <div className="panel-header">
@@ -137,12 +125,6 @@ export function AvailabilityPage() {
               </div>
 
               <div className="availability-toggle-row">
-                <button className="ghost-button active" type="button">
-                  List
-                </button>
-                <button className="ghost-button" type="button">
-                  Calendar
-                </button>
                 <button className="ghost-button" onClick={() => setSelectedSchedule(activeSchedule)} type="button">
                   Edit
                 </button>
