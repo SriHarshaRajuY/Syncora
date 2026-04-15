@@ -1,8 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { api } from '../api/client.js';
 import { AdminShell } from '../components/AdminShell.jsx';
 import { Modal } from '../components/Modal.jsx';
 import { ScheduleForm } from '../components/ScheduleForm.jsx';
+
+const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export function AvailabilityPage() {
   const [schedules, setSchedules] = useState([]);
@@ -27,6 +29,15 @@ export function AvailabilityPage() {
     load();
   }, []);
 
+  const activeSchedule = useMemo(
+    () => schedules.find((schedule) => schedule.id === activeScheduleId) || schedules[0] || null,
+    [activeScheduleId, schedules]
+  );
+
+  const activeEventCount = activeSchedule
+    ? eventTypes.filter((eventType) => eventType.scheduleId === activeSchedule.id).length
+    : 0;
+
   const handleSave = async (payload) => {
     try {
       if (selectedSchedule?.id) {
@@ -48,16 +59,14 @@ export function AvailabilityPage() {
 
     try {
       await api.delete(`/availability/schedules/${id}`);
+      if (activeScheduleId === id) {
+        setActiveScheduleId(null);
+      }
       load();
     } catch (err) {
       setError(err.message);
     }
   };
-
-  const activeSchedule = schedules.find((schedule) => schedule.id === activeScheduleId) || schedules[0] || null;
-  const activeEventCount = activeSchedule
-    ? eventTypes.filter((eventType) => eventType.scheduleId === activeSchedule.id).length
-    : 0;
 
   return (
     <AdminShell
@@ -123,7 +132,7 @@ export function AvailabilityPage() {
                   {activeSchedule.name} {activeSchedule.isDefault ? <span className="subtle-inline">(default)</span> : null}
                 </h2>
                 <p className="muted-text">
-                  {activeSchedule.timezone} • Active on {activeEventCount} event {activeEventCount === 1 ? 'type' : 'types'}
+                  {activeSchedule.timezone} - Active on {activeEventCount} event {activeEventCount === 1 ? 'type' : 'types'}
                 </p>
               </div>
 
@@ -150,9 +159,8 @@ export function AvailabilityPage() {
                 </div>
 
                 <div className="hours-list">
-                  {[0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => {
+                  {weekDays.map((dayLabel, dayOfWeek) => {
                     const rule = activeSchedule.rules.find((item) => item.dayOfWeek === dayOfWeek);
-                    const dayLabel = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dayOfWeek];
 
                     return (
                       <div className="hours-row" key={dayLabel}>
@@ -196,7 +204,9 @@ export function AvailabilityPage() {
                     </div>
                   )}
                 </div>
+              </article>
             </div>
+
             <div className="availability-detail-footer">
               <button className="ghost-button" onClick={() => setSelectedSchedule(activeSchedule)} type="button">
                 Edit schedule
@@ -206,7 +216,12 @@ export function AvailabilityPage() {
               </button>
             </div>
           </section>
-        ) : null}
+        ) : (
+          <div className="empty-state-card">
+            <h3>No schedules available</h3>
+            <p>Create a schedule to configure working hours and booking rules.</p>
+          </div>
+        )}
       </section>
 
       {selectedSchedule ? (

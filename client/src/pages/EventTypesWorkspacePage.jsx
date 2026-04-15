@@ -101,7 +101,7 @@ export function EventTypesPage() {
 
       <section className="cal-toolbar">
         <label className="cal-search">
-          <span className="cal-search-icon">⌕</span>
+          <span className="cal-search-icon">Search</span>
           <input
             type="search"
             value={search}
@@ -109,6 +109,7 @@ export function EventTypesPage() {
             placeholder="Search event types"
           />
         </label>
+
         <div className="cal-toolbar-actions">
           <a className="ghost-button" href="/book" target="_blank" rel="noreferrer">
             View landing page
@@ -141,8 +142,8 @@ export function EventTypesPage() {
                   <button className="secondary-button" onClick={() => copyLink(eventType.slug)}>
                     Copy link
                   </button>
-                  <a className="ghost-button icon-only" href={`/book/${eventType.slug}`} target="_blank" rel="noreferrer">
-                    ↗
+                  <a className="ghost-button" href={`/book/${eventType.slug}`} target="_blank" rel="noreferrer">
+                    Open
                   </a>
                   <button className="ghost-button" onClick={() => setSelectedEvent(eventType)}>
                     Edit

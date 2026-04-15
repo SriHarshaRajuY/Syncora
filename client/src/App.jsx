@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AvailabilityPage } from './pages/AvailabilityPage.jsx';
-import { BookingPage } from './pages/BookingPage.jsx';
-import { ConfirmationPage } from './pages/ConfirmationPage.jsx';
-import { EventTypesPage } from './pages/EventTypesPage.jsx';
-import { HomePage } from './pages/HomePage.jsx';
-import { MeetingsPage } from './pages/MeetingsPage.jsx';
+import { AvailabilityPage } from './pages/AvailabilityWorkspacePage.jsx';
+import { BookingPage } from './pages/BookingWorkspacePage.jsx';
+import { ConfirmationPage } from './pages/ConfirmationWorkspacePage.jsx';
+import { EventTypesPage } from './pages/EventTypesWorkspacePage.jsx';
+import { HomePage } from './pages/LandingPage.jsx';
+import { MeetingsPage } from './pages/MeetingsWorkspacePage.jsx';
 import { PublicEventTypesPage } from './pages/PublicEventTypesPage.jsx';
 
 export default function App() {
