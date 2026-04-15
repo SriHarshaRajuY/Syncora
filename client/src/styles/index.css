@@ -1171,3 +1171,29 @@ img {
     justify-content: flex-start;
   }
 }
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.filter-bar select,
+.filter-input {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: white;
+  font-size: 0.9rem;
+}
+
+.filter-input {
+  min-width: 220px;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+  font-weight: bold;
+}

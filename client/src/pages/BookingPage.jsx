@@ -115,7 +115,8 @@ navigate(`/book/${slug}/confirmed/${booking.id}`, {
     }
   };
 
-  const selectedSlotLabel = slots.find((slot) => slot.start === selectedStart)?.label;
+  const selectedSlotLabel =
+  slots?.find((slot) => slot.start === selectedStart)?.label || '';
 
   return (
     <div className="public-page calendly-page">
@@ -230,55 +231,89 @@ navigate(`/book/${slug}/confirmed/${booking.id}`, {
             <p className="muted-text">This panel becomes your confirmation step after time selection.</p>
           </div>
 
-          <form className="form-grid public-form-grid" onSubmit={handleSubmit}>
-            <label>
-              <span>Name</span>
-              <input value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} required />
-            </label>
-            <label>
-              <span>Email</span>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-                required
-              />
-            </label>
+  <form className="form-grid public-form-grid" onSubmit={handleSubmit}>
+  {/* Name */}
+  <label>
+    <span>
+      Name <span className="required">*</span>
+    </span>
+    <input
+      value={form.name}
+      onChange={(event) =>
+        setForm((current) => ({ ...current, name: event.target.value }))
+      }
+      required
+    />
+  </label>
 
-            {(eventType?.inviteeQuestions || []).map((question) => (
-              <label className="full-width" key={question.label}>
-                <span>{question.label}</span>
-                {question.type === 'textarea' ? (
-                  <textarea
-                    rows="3"
-                    value={form.answers[question.label] || ''}
-                    onChange={(event) =>
-                      setForm((current) => ({
-                        ...current,
-                        answers: { ...current.answers, [question.label]: event.target.value }
-                      }))
-                    }
-                    required={question.required}
-                  />
-                ) : (
-                  <input
-                    value={form.answers[question.label] || ''}
-                    onChange={(event) =>
-                      setForm((current) => ({
-                        ...current,
-                        answers: { ...current.answers, [question.label]: event.target.value }
-                      }))
-                    }
-                    required={question.required}
-                  />
-                )}
-              </label>
-            ))}
+  {/* Email */}
+  <label>
+    <span>
+      Email <span className="required">*</span>
+    </span>
+    <input
+      type="email"
+      value={form.email}
+      onChange={(event) =>
+        setForm((current) => ({ ...current, email: event.target.value }))
+      }
+      required
+    />
+  </label>
 
-            <button className="primary-button full-width" type="submit" disabled={saving || !selectedStart}>
-              {saving ? 'Saving...' : rescheduleToken ? 'Reschedule meeting' : 'Confirm booking'}
-            </button>
-          </form>
+  {/* Dynamic Questions */}
+  {(eventType?.inviteeQuestions || []).map((question) => (
+    <label className="full-width" key={question.label}>
+      <span>
+        {question.label}{' '}
+        {question.required && <span className="required">*</span>}
+      </span>
+
+      {question.type === 'textarea' ? (
+        <textarea
+          rows="3"
+          value={form.answers[question.label] || ''}
+          onChange={(event) =>
+            setForm((current) => ({
+              ...current,
+              answers: {
+                ...current.answers,
+                [question.label]: event.target.value
+              }
+            }))
+          }
+          required={question.required}
+        />
+      ) : (
+        <input
+          value={form.answers[question.label] || ''}
+          onChange={(event) =>
+            setForm((current) => ({
+              ...current,
+              answers: {
+                ...current.answers,
+                [question.label]: event.target.value
+              }
+            }))
+          }
+          required={question.required}
+        />
+      )}
+    </label>
+  ))}
+
+  <button
+    className="primary-button full-width"
+    type="submit"
+    disabled={saving || !selectedStart}
+  >
+    {saving
+      ? 'Saving...'
+      : rescheduleToken
+      ? 'Reschedule meeting'
+      : 'Confirm booking'}
+  </button>
+  </form>
         </section>
       </div>
     </div>

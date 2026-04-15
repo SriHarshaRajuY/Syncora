@@ -33,16 +33,27 @@ export function ScheduleForm({ initialValue, onSubmit, onCancel }) {
     }));
   };
 
-  const toggleRule = (dayOfWeek, checked) => {
-    setForm((current) => ({
+const toggleRule = (dayOfWeek, checked) => {
+  setForm((current) => {
+    const exists = current.rules.some(r => r.dayOfWeek === dayOfWeek);
+
+    if (checked && !exists) {
+      return {
+        ...current,
+        rules: [...current.rules, {
+          dayOfWeek,
+          startTime: '09:00:00',
+          endTime: '17:00:00'
+        }]
+      };
+    }
+
+    return {
       ...current,
-      rules: checked
-        ? [...current.rules, { dayOfWeek, startTime: '09:00:00', endTime: '17:00:00' }].sort(
-            (left, right) => left.dayOfWeek - right.dayOfWeek
-          )
-        : current.rules.filter((rule) => rule.dayOfWeek !== dayOfWeek)
-    }));
-  };
+      rules: current.rules.filter(r => r.dayOfWeek !== dayOfWeek)
+    };
+  });
+};
 
   const addOverride = () => {
     setForm((current) => ({

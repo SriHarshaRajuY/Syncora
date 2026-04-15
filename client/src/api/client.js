@@ -9,16 +9,19 @@ async function request(path, options = {}) {
     ...options
   });
 
+  let data = null;
+
+  try {
+    data = await response.json();
+  } catch {
+    data = {};
+  }
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Something went wrong.');
+    throw new Error(data.message || 'Something went wrong');
   }
 
-  if (response.status === 204) {
-    return null;
-  }
-
-  return response.json();
+  return data;
 }
 
 export const api = {
@@ -38,4 +41,3 @@ export const api = {
       method: 'DELETE'
     })
 };
-
