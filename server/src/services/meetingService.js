@@ -214,16 +214,19 @@ export const createBooking = async ({ slug, payload }) => {
 
   const createdMeeting = await getMeetingById(result.insertId);
 
-  await sendBookingEmails({
-    inviteeEmail: createdMeeting.inviteeEmail,
-    inviteeName: createdMeeting.inviteeName,
-    eventName: createdMeeting.eventName,
-    startAt: dayjs(createdMeeting.startAt).tz(createdMeeting.timezone || schedule.timezone).format('ddd, MMM D YYYY hh:mm A'),
-    endAt: dayjs(createdMeeting.endAt).tz(createdMeeting.timezone || schedule.timezone).format('ddd, MMM D YYYY hh:mm A'),
-    manageUrl: `${env.appBaseUrl}/book/${eventType.slug}?reschedule=${createdMeeting.rescheduleToken}`
-  });
+  const emailResult = await sendBookingEmails({
+  inviteeEmail: createdMeeting.inviteeEmail,
+  inviteeName: createdMeeting.inviteeName,
+  eventName: createdMeeting.eventName,
+  startAt: dayjs(createdMeeting.startAt).tz(createdMeeting.timezone || schedule.timezone).format('ddd, MMM D YYYY hh:mm A'),
+  endAt: dayjs(createdMeeting.endAt).tz(createdMeeting.timezone || schedule.timezone).format('ddd, MMM D YYYY hh:mm A'),
+  manageUrl: `${env.appBaseUrl}/book/${eventType.slug}?reschedule=${createdMeeting.rescheduleToken}`
+});
 
-  return createdMeeting;
+return {
+  ...createdMeeting,
+  emailStatus: emailResult
+};
 };
 
 export const cancelMeeting = async (meetingId, reason = 'Cancelled by host') => {
@@ -238,14 +241,19 @@ export const cancelMeeting = async (meetingId, reason = 'Cancelled by host') => 
     [reason, meetingId]
   );
 
-  await sendCancellationEmail({
-    inviteeEmail: meeting.inviteeEmail,
-    inviteeName: meeting.inviteeName,
-    eventName: meeting.eventName,
-    cancelledAt: dayjs().format('ddd, MMM D YYYY hh:mm A')
-  });
+  const emailResult = await sendCancellationEmail({
+  inviteeEmail: meeting.inviteeEmail,
+  inviteeName: meeting.inviteeName,
+  eventName: meeting.eventName,
+  cancelledAt: dayjs().format('ddd, MMM D YYYY hh:mm A')
+});
 
-  return getMeetingById(meetingId);
+const updated = await getMeetingById(meetingId);
+
+return {
+  ...updated,
+  emailStatus: emailResult
+};
 };
 
 export const cancelMeetingByToken = async (token, reason = 'Cancelled by invitee') => {

@@ -106,8 +106,9 @@ export function BookingPage() {
         booking = await api.post(`/meetings/public/event-types/${slug}/book`, payload);
       }
 
-      navigate(`/book/${slug}/confirmed/${booking.id}`);
-    } catch (err) {
+navigate(`/book/${slug}/confirmed/${booking.id}`, {
+  state: { emailStatus: booking.emailStatus }
+});    } catch (err) {
       setError(err.message);
     } finally {
       setSaving(false);

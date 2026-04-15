@@ -14,18 +14,26 @@ const transporter =
       })
     : null;
 
+// 🔥 RETURN STATUS
 const sendMail = async ({ to, subject, html }) => {
   if (!transporter) {
     console.log(`Email skipped: ${subject} -> ${to}`);
-    return;
+    return { success: false, reason: 'SMTP not configured' };
   }
 
-  await transporter.sendMail({
-    from: env.smtpFrom,
-    to,
-    subject,
-    html
-  });
+  try {
+    await transporter.sendMail({
+      from: env.smtpFrom,
+      to,
+      subject,
+      html
+    });
+
+    return { success: true };
+  } catch (err) {
+    console.error('Email failed:', err);
+    return { success: false, reason: err.message };
+  }
 };
 
 export const sendBookingEmails = async ({ inviteeEmail, inviteeName, eventName, startAt, endAt, manageUrl }) => {
@@ -39,7 +47,7 @@ export const sendBookingEmails = async ({ inviteeEmail, inviteeName, eventName, 
     </div>
   `;
 
-  await sendMail({
+  return await sendMail({
     to: inviteeEmail,
     subject: `${eventName} confirmed`,
     html
@@ -55,10 +63,9 @@ export const sendCancellationEmail = async ({ inviteeEmail, inviteeName, eventNa
     </div>
   `;
 
-  await sendMail({
+  return await sendMail({
     to: inviteeEmail,
     subject: `${eventName} cancelled`,
     html
   });
 };
-

@@ -3,13 +3,15 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { SiteHeader } from '../components/SiteHeader.jsx';
+import { useLocation } from 'react-router-dom';
 
 export function ConfirmationPage() {
   const { id, slug } = useParams();
   const [booking, setBooking] = useState(null);
   const [error, setError] = useState('');
   const [cancelling, setCancelling] = useState(false);
-
+  const location = useLocation();
+const emailStatus = location.state?.emailStatus;
   useEffect(() => {
     api
       .get(`/meetings/public/booking/${id}`)
@@ -53,6 +55,13 @@ export function ConfirmationPage() {
         <p>
           {booking.inviteeName} - {booking.inviteeEmail}
         </p>
+        {emailStatus ? (
+  <div className={`banner ${emailStatus.success ? 'success' : 'error'} narrow`}>
+    {emailStatus.success
+      ? 'Confirmation email sent successfully 📧'
+      : `Booking confirmed, but email failed: ${emailStatus.reason}`}
+  </div>
+) : null}
         <div className="confirmation-meta">
           <span>{dayjs(booking.startAt).format('dddd, MMMM D YYYY')}</span>
           <span>
