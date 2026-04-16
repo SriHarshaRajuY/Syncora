@@ -175,33 +175,70 @@ const saveMeeting = async ({ eventType, schedule, payload, existingMeetingId }) 
   }
 };
 
-export const listMeetings = async (scope = 'upcoming') => {
-  let query = '';
-  let params = [DEFAULT_USER_ID];
+export const listMeetings = async ({ scope = 'upcoming', page = 1, limit = 5 } = {}) => {
+  const safeScope = ['upcoming', 'past', 'cancelled'].includes(scope) ? scope : 'upcoming';
+  const safePage = Number.isFinite(page) && page > 0 ? page : 1;
+  const safeLimit = Number.isFinite(limit) && limit > 0 ? Math.min(limit, 50) : 5;
+  const offset = (safePage - 1) * safeLimit;
 
-  if (scope === 'cancelled') {
-    query = `
-      ${baseMeetingSelect}
+  let whereClause = '';
+  let orderBy = '';
+  const baseParams = [DEFAULT_USER_ID];
+
+  if (safeScope === 'cancelled') {
+    whereClause = `
       WHERE et.user_id = ?
         AND m.status = 'cancelled'
-      ORDER BY COALESCE(m.cancelled_at, m.updated_at, m.start_at) DESC
     `;
+    orderBy = `ORDER BY COALESCE(m.cancelled_at, m.updated_at, m.start_at) DESC`;
   } else {
-    const comparator = scope === 'past' ? '<' : '>=';
-    const sortDirection = scope === 'past' ? 'DESC' : 'ASC';
-
-    query = `
-      ${baseMeetingSelect}
+    const comparator = safeScope === 'past' ? '<' : '>=';
+    const sortDirection = safeScope === 'past' ? 'DESC' : 'ASC';
+    whereClause = `
       WHERE et.user_id = ?
         AND m.status = 'scheduled'
         AND m.start_at ${comparator} UTC_TIMESTAMP()
-      ORDER BY m.start_at ${sortDirection}
     `;
+    orderBy = `ORDER BY m.start_at ${sortDirection}`;
   }
 
-  const [rows] = await pool.query(query, params);
+  const [countRows] = await pool.query(
+    `
+      SELECT COUNT(*) AS total
+      FROM meetings m
+      INNER JOIN event_types et ON et.id = m.event_type_id
+      ${whereClause}
+    `,
+    baseParams
+  );
 
-  return rows.map(buildMeetingResponse);
+  const totalItems = Number(countRows[0]?.total || 0);
+  const totalPages = Math.max(1, Math.ceil(totalItems / safeLimit));
+  const currentPage = Math.min(safePage, totalPages);
+  const pageOffset = (currentPage - 1) * safeLimit;
+
+  const [rows] = await pool.query(
+    `
+      ${baseMeetingSelect}
+      ${whereClause}
+      ${orderBy}
+      LIMIT ?
+      OFFSET ?
+    `,
+    [...baseParams, safeLimit, pageOffset]
+  );
+
+  return {
+    items: rows.map(buildMeetingResponse),
+    pagination: {
+      page: currentPage,
+      limit: safeLimit,
+      totalItems,
+      totalPages,
+      hasPrev: currentPage > 1,
+      hasNext: currentPage < totalPages
+    }
+  };
 };
 
 export const getMeetingPublicById = async (id) => getMeetingById(id);

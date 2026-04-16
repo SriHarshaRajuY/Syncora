@@ -11,7 +11,10 @@ import {
 import { getEventTypeBySlug, listPublicEventTypes } from '../services/eventTypeService.js';
 
 export const getMeetings = asyncHandler(async (req, res) => {
-  res.json(await listMeetings(req.query.scope));
+  const scope = req.query.scope;
+  const page = Number.parseInt(req.query.page || '1', 10);
+  const limit = Number.parseInt(req.query.limit || '5', 10);
+  res.json(await listMeetings({ scope, page, limit }));
 });
 
 export const postBooking = asyncHandler(async (req, res) => {

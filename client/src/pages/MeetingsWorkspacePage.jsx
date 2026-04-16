@@ -8,6 +8,16 @@ export function MeetingsPage() {
   const navigate = useNavigate();
   const [scope, setScope] = useState('upcoming');
   const [meetings, setMeetings] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 5,
+    totalItems: 0,
+    totalPages: 1,
+    hasPrev: false,
+    hasNext: false
+  });
   const [error, setError] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -17,8 +27,34 @@ export function MeetingsPage() {
 
   const load = async () => {
     try {
-      const data = await api.get(`/meetings?scope=${scope}`);
-      setMeetings(data);
+      const data = await api.get(`/meetings?scope=${scope}&page=${page}&limit=${limit}`);
+
+      if (Array.isArray(data)) {
+        setMeetings(data);
+        setPagination({
+          page: 1,
+          limit,
+          totalItems: data.length,
+          totalPages: 1,
+          hasPrev: false,
+          hasNext: false
+        });
+      } else {
+        setMeetings(data.items || []);
+        const nextPagination = data.pagination || {
+          page: 1,
+          limit,
+          totalItems: 0,
+          totalPages: 1,
+          hasPrev: false,
+          hasNext: false
+        };
+        setPagination(nextPagination);
+        if (nextPagination.page !== page) {
+          setPage(nextPagination.page);
+        }
+      }
+
       setError('');
     } catch (err) {
       setError(err.message);
@@ -27,6 +63,15 @@ export function MeetingsPage() {
 
   useEffect(() => {
     load();
+  }, [scope, page, limit]);
+
+  useEffect(() => {
+    setPage(1);
+    setStatusFilter('all');
+    setSearch('');
+    setEventFilter('all');
+    setRangeStart('');
+    setRangeEnd('');
   }, [scope]);
 
   const filteredMeetings = useMemo(
@@ -150,6 +195,49 @@ export function MeetingsPage() {
             <span>To</span>
             <input type="date" value={rangeEnd} onChange={(event) => setRangeEnd(event.target.value)} />
           </label>
+        </div>
+
+        <div className="meetings-pagination-bar">
+          <label className="pagination-limit-field">
+            <span>Meetings per page</span>
+            <select
+              value={limit}
+              onChange={(event) => {
+                setPage(1);
+                setLimit(Number(event.target.value));
+              }}
+            >
+              <option value={3}>3</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+            </select>
+          </label>
+
+          <div className="pagination-meta">
+            <span>
+              Page {pagination.page} of {pagination.totalPages}
+            </span>
+            <span>{pagination.totalItems} total meetings</span>
+          </div>
+
+          <div className="pagination-actions">
+            <button
+              className="ghost-button"
+              type="button"
+              disabled={!pagination.hasPrev}
+              onClick={() => setPage((current) => Math.max(1, current - 1))}
+            >
+              Previous
+            </button>
+            <button
+              className="ghost-button"
+              type="button"
+              disabled={!pagination.hasNext}
+              onClick={() => setPage((current) => current + 1)}
+            >
+              Next
+            </button>
+          </div>
         </div>
 
         {filteredMeetings.length ? (
