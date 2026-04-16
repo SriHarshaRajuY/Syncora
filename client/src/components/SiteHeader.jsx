@@ -19,6 +19,7 @@ export function SiteHeader({
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const buttonRef = useRef(null);
 
   useEffect(() => {
     setMobileOpen(false);
@@ -30,7 +31,13 @@ export function SiteHeader({
     const onMouseDown = (event) => {
       const el = dropdownRef.current;
       if (!el) return;
+      const btn = buttonRef.current;
       if (event.target instanceof Node && !el.contains(event.target)) {
+        // If the user clicked the hamburger button, let its own onClick toggle handle it.
+        if (btn && event.target instanceof Node && btn.contains(event.target)) {
+          return;
+        }
+
         setMobileOpen(false);
       }
     };
@@ -72,6 +79,7 @@ export function SiteHeader({
           type="button"
           aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={mobileOpen}
+          ref={buttonRef}
           onClick={() => setMobileOpen((v) => !v)}
         >
           <span />

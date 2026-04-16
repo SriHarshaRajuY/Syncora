@@ -1618,12 +1618,12 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   background: transparent;
   border: none;
   padding: 0;
-  color: #6b7a90;
+  color: #5f6f86;
   font-size: 1rem;
   font-weight: 700;
 }
@@ -1640,6 +1640,12 @@ a:hover {
 .cal-search input::placeholder {
   color: #8a9ab0;
   opacity: 1;
+}
+
+/* Prevent generic input focus highlight from showing around the pill */
+.cal-search input:focus {
+  box-shadow: none;
+  border: none;
 }
 
 .cal-owner-row {
@@ -3124,36 +3130,38 @@ input[type='checkbox']:focus-visible {
   width: 44px;
   height: 44px;
   border-radius: 16px;
-  border: 1px solid rgba(219, 228, 240, 0.95);
-  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  background: transparent;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 5px;
   padding: 0;
 }
 
 .mobile-menu-button span {
   display: block;
-  width: 18px;
-  height: 2px;
-  background: #1f3a5c;
+  width: 26px;
+  height: 3px;
+  background: #17355c;
   border-radius: 999px;
 }
 
 .mobile-menu-button span + span {
-  margin-top: 4px;
+  margin-top: 0;
 }
 
 .mobile-nav-dropdown {
   margin: 10px auto 0;
-  max-width: 520px;
   width: 100%;
   background: rgba(255, 255, 255, 0.98);
   border: 1px solid rgba(219, 228, 240, 0.95);
   border-radius: 18px;
   box-shadow: var(--shadow-sm);
-  padding: 10px;
+  padding: 12px;
   display: grid;
   gap: 6px;
+  z-index: 60;
 }
 
 .mobile-nav-dropdown .site-nav-link {
