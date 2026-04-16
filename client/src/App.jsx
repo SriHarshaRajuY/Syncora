@@ -1,4 +1,6 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { hasSeenLanding, markLandingSeen } from './lib/onboarding.js';
 import { AvailabilityPage } from './pages/AvailabilityWorkspacePage.jsx';
 import { BookingPage } from './pages/BookingWorkspacePage.jsx';
 import { ConfirmationPage } from './pages/ConfirmationWorkspacePage.jsx';
@@ -8,9 +10,27 @@ import { MeetingsPage } from './pages/MeetingsWorkspacePage.jsx';
 import { PublicEventTypesPage } from './pages/PublicEventTypesPage.jsx';
 
 export default function App() {
+  const location = useLocation();
+  const [hasCompletedLanding, setHasCompletedLanding] = useState(() => hasSeenLanding());
+
+  useEffect(() => {
+    if (location.pathname !== '/' && !hasCompletedLanding) {
+      markLandingSeen();
+      setHasCompletedLanding(true);
+    }
+  }, [hasCompletedLanding, location.pathname]);
+
+  const homeElement = useMemo(() => {
+    if (hasCompletedLanding) {
+      return <Navigate to="/events" replace />;
+    }
+
+    return <HomePage onEnterWorkspace={() => setHasCompletedLanding(true)} />;
+  }, [hasCompletedLanding]);
+
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={homeElement} />
       <Route path="/events" element={<EventTypesPage />} />
       <Route path="/availability" element={<AvailabilityPage />} />
       <Route path="/meetings" element={<MeetingsPage />} />

@@ -117,7 +117,7 @@ export function BookingPage() {
 
   return (
     <div className="public-page calendly-page">
-      <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} />
+      <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} brandTo="/book" />
 
       <div className="public-hero booking-hero">
         <div>

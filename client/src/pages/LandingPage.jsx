@@ -2,12 +2,18 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { SiteHeader } from '../components/SiteHeader.jsx';
+import { markLandingSeen } from '../lib/onboarding.js';
 
-export function HomePage() {
+export function HomePage({ onEnterWorkspace }) {
   const [eventTypes, setEventTypes] = useState([]);
   const [meetings, setMeetings] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const enterWorkspace = () => {
+    markLandingSeen();
+    onEnterWorkspace?.();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,10 +68,10 @@ export function HomePage() {
               </p>
 
               <div className="hero-actions">
-                <Link className="primary-button" to="/book">
+                <Link className="primary-button" to="/book" onClick={enterWorkspace}>
                   Find a time
                 </Link>
-                <Link className="ghost-button" to="/events">
+                <Link className="ghost-button" to="/events" onClick={enterWorkspace}>
                   Open workspace
                 </Link>
               </div>
@@ -156,7 +162,7 @@ export function HomePage() {
                 <article className="public-event-card" key={eventType.id}>
                   <h3>{eventType.name}</h3>
                   <p>{eventType.description}</p>
-                  <Link className="primary-button" to={`/book/${eventType.slug}`}>
+                  <Link className="primary-button" to={`/book/${eventType.slug}`} onClick={enterWorkspace}>
                     Open booking page
                   </Link>
                 </article>

@@ -16,7 +16,7 @@ export function PublicEventTypesPage() {
 
   return (
     <div className="public-page">
-      <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} />
+      <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} brandTo="/book" />
 
       <section className="public-hero">
         <div>

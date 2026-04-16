@@ -2473,3 +2473,523 @@ a:hover {
     grid-template-columns: 1fr;
   }
 }
+
+/* Refined Calendly-like polish */
+:root {
+  --surface: #ffffff;
+  --surface-soft: #f8fbff;
+  --surface-muted: #f3f6fb;
+  --text-heading: #17355c;
+  --text-body: #5f748c;
+  --field-border: #c8d7ea;
+  --field-border-strong: #8bb6ff;
+  --ring: 0 0 0 4px rgba(0, 107, 255, 0.1);
+}
+
+body {
+  color: var(--text-heading);
+  background:
+    radial-gradient(circle at top left, rgba(0, 107, 255, 0.08), transparent 22%),
+    linear-gradient(180deg, #ffffff 0%, #f7faff 46%, #f5f8fd 100%);
+}
+
+.site-header {
+  padding: 18px 24px 10px;
+}
+
+.site-header-inner {
+  max-width: 1200px;
+  padding: 14px 18px;
+  border-color: rgba(219, 228, 240, 0.98);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.site-nav-link,
+.nav-link,
+.cal-nav-item {
+  letter-spacing: -0.01em;
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button,
+.tab,
+.meeting-scope-tab,
+.cal-create-button {
+  min-height: 44px;
+  padding: 11px 18px;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.ghost-button,
+.tab,
+.meeting-scope-tab {
+  background: #ffffff;
+}
+
+.marketing-shell,
+.public-page,
+.confirmation-screen,
+.loading-screen {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.hero-section,
+.feature-grid,
+.event-showcase,
+.logo-marquee,
+.public-directory,
+.dashboard-shell {
+  max-width: 1200px;
+}
+
+.hero-section {
+  min-height: calc(100vh - 148px);
+  gap: 48px;
+  padding: 34px 0 56px;
+  align-items: center;
+}
+
+.hero-copy {
+  display: grid;
+  gap: 22px;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  max-width: 620px;
+  color: #102a43;
+  font-size: clamp(3rem, 5.6vw, 4.7rem);
+  line-height: 0.94;
+  letter-spacing: -0.065em;
+}
+
+.hero-text {
+  max-width: 600px;
+  color: var(--text-body);
+  font-size: 1.02rem;
+  line-height: 1.72;
+}
+
+.hero-actions {
+  gap: 14px;
+}
+
+.hero-stats {
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.hero-stat,
+.feature-panel,
+.public-event-card,
+.event-card,
+.schedule-card,
+.stat-card,
+.meeting-card,
+.booking-layout-refined,
+.event-type-row,
+.schedule-index-card,
+.availability-detail-card,
+.meetings-shell-card,
+.empty-state-card,
+.advanced-settings-card {
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.05);
+}
+
+.hero-stat {
+  min-width: 144px;
+  padding: 20px 18px;
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.hero-visual {
+  min-height: 600px;
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+}
+
+.hero-card-main {
+  width: 72%;
+}
+
+.hero-card-main h3,
+.hero-card-floating h4,
+.feature-panel h3,
+.public-event-card h3,
+.event-type-row-top h3,
+.availability-detail-header h2,
+.panel-header h3,
+.meeting-headline h3 {
+  color: var(--text-heading);
+  letter-spacing: -0.025em;
+}
+
+.logo-marquee {
+  margin-bottom: 54px;
+}
+
+.marquee-track {
+  gap: 14px;
+}
+
+.feature-grid {
+  gap: 22px;
+  margin-bottom: 64px;
+}
+
+.feature-panel,
+.public-event-card,
+.stat-card,
+.event-card,
+.schedule-card,
+.booking-summary-panel,
+.calendar-panel,
+.booking-form-panel {
+  gap: 14px;
+}
+
+.feature-panel,
+.public-event-card,
+.stat-card,
+.event-card,
+.schedule-card,
+.availability-panel,
+.booking-summary-meta div,
+.selection-preview,
+.hours-row,
+.override-card {
+  background: var(--surface);
+}
+
+.section-title {
+  margin-bottom: 20px;
+}
+
+.section-title h2,
+.section-title h3,
+.page-header h2,
+.public-hero h1,
+.confirmation-card h1,
+.booking-summary-panel h2 {
+  color: var(--text-heading);
+  letter-spacing: -0.035em;
+}
+
+.event-showcase {
+  padding-bottom: 56px;
+}
+
+.public-page .public-hero,
+.booking-hero {
+  margin-bottom: 26px;
+  padding: 34px 38px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.26), transparent 18%),
+    linear-gradient(135deg, #0d63db 0%, #0b57d0 48%, #0a47b1 100%);
+}
+
+.public-hero p,
+.booking-hero p {
+  max-width: 680px;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.7;
+}
+
+.public-directory .section-title {
+  margin-bottom: 24px;
+}
+
+.event-type-row {
+  border-radius: 20px;
+}
+
+.event-type-main,
+.schedule-index-card,
+.availability-detail-card,
+.meetings-shell-card,
+.advanced-settings-card,
+.empty-state-card {
+  padding: 30px;
+}
+
+.event-type-main {
+  gap: 16px;
+}
+
+.event-type-description,
+.event-type-details span,
+.event-type-meta-row span,
+.hours-row span,
+.override-card p,
+.meetings-summary,
+.empty-state-card p,
+.drawer-helper,
+.drawer-section-copy,
+.drawer-form-subtitle {
+  color: var(--text-body);
+}
+
+.booking-layout-refined {
+  border-radius: 28px;
+  background: #ffffff;
+}
+
+.booking-summary-panel,
+.calendar-panel,
+.booking-form-panel {
+  padding: 34px 32px;
+}
+
+.booking-summary-copy,
+.muted-text,
+.page-subtitle,
+.meeting-main p,
+.public-event-card p,
+.feature-panel p,
+.schedule-card p,
+.stat-card p {
+  color: var(--text-body);
+}
+
+.calendar-header h3,
+.form-panel-header h3 {
+  font-size: 1.35rem;
+}
+
+.calendar-grid {
+  gap: 12px;
+}
+
+.day-cell,
+.slot-button {
+  min-height: 50px;
+  border-radius: 14px;
+  border-color: #d7e1ef;
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
+.slot-button {
+  justify-content: center;
+  padding: 0 14px;
+}
+
+.slot-list {
+  gap: 12px;
+}
+
+.form-panel-header {
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.drawer-form-header,
+.drawer-form-footer,
+.drawer-form-body {
+  background: #ffffff;
+}
+
+.drawer-form-header,
+.drawer-form-footer {
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.drawer-form-body {
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 28px;
+}
+
+.drawer-section {
+  gap: 20px;
+}
+
+.drawer-field,
+.advanced-settings-grid label,
+.date-range-field,
+.public-form-grid label,
+.form-grid label {
+  gap: 9px;
+}
+
+.drawer-field > span,
+.advanced-settings-grid label > span,
+.date-range-field > span,
+.public-form-grid label > span,
+.form-grid label > span {
+  color: var(--text-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='color']),
+select,
+textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 13px 15px;
+  border: 1px solid var(--field-border);
+  border-radius: 14px;
+  background: #ffffff;
+  color: var(--text-heading);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02);
+}
+
+textarea {
+  min-height: 108px;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a9ab0;
+}
+
+input:not([type='checkbox']):not([type='radio']):not([type='color']):focus,
+select:focus,
+textarea:focus {
+  border-color: var(--field-border-strong);
+  box-shadow: var(--ring);
+  background: #ffffff;
+}
+
+input[type='color'] {
+  width: 64px;
+  min-height: 48px;
+  padding: 6px;
+  border: 1px solid var(--field-border);
+  border-radius: 14px;
+  background: #ffffff;
+}
+
+input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 1.5px solid #9bb3d1;
+  border-radius: 6px;
+  background: #ffffff;
+  display: inline-grid;
+  place-items: center;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type='checkbox']::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: transform 0.14s ease-in-out;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0, 43% 62%);
+  background: #ffffff;
+}
+
+input[type='checkbox']:checked {
+  border-color: #006bff;
+  background: #006bff;
+  box-shadow: 0 0 0 3px rgba(0, 107, 255, 0.12);
+}
+
+input[type='checkbox']:checked::after {
+  transform: scale(1);
+}
+
+input[type='checkbox']:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 107, 255, 0.14);
+}
+
+.checkbox-inline,
+.question-required-toggle,
+.override-availability-toggle,
+.settings-toggle {
+  gap: 10px;
+  color: var(--text-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.settings-toggle input,
+.question-required-toggle input,
+.override-availability-toggle input,
+.checkbox-inline input {
+  flex: 0 0 auto;
+}
+
+.cal-search,
+.filter-bar select,
+.filter-input,
+.date-range-field input {
+  border-radius: 14px;
+}
+
+.cal-search {
+  min-height: 50px;
+  border-color: var(--field-border);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02);
+}
+
+.confirmation-card {
+  max-width: 760px;
+  padding: 42px 40px;
+  border-radius: 28px;
+}
+
+.selection-preview h4,
+.confirmation-card h1 {
+  letter-spacing: -0.03em;
+}
+
+@media (max-width: 760px) {
+  .marketing-shell,
+  .public-page,
+  .confirmation-screen,
+  .loading-screen,
+  .site-header {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero-section {
+    gap: 28px;
+    padding-top: 22px;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.8rem;
+  }
+
+  .public-page .public-hero,
+  .booking-hero,
+  .confirmation-card,
+  .booking-summary-panel,
+  .calendar-panel,
+  .booking-form-panel {
+    padding: 24px 20px;
+  }
+
+  .event-type-main,
+  .schedule-index-card,
+  .availability-detail-card,
+  .meetings-shell-card,
+  .advanced-settings-card,
+  .empty-state-card,
+  .drawer-form-header,
+  .drawer-form-footer,
+  .drawer-form-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}

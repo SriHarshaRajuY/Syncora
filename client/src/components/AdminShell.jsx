@@ -19,7 +19,7 @@ export function AdminShell({
   return (
     <div className={`admin-app ${drawer ? 'has-drawer' : ''}`}>
       <aside className="cal-sidebar">
-        <Link className="cal-logo" to="/">
+        <Link className="cal-logo" to="/events">
           <span className="brand-mark">S</span>
           <span className="brand-copy">
             <strong>Syncora</strong>

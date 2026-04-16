@@ -46,7 +46,7 @@ export function ConfirmationPage() {
 
   return (
     <div className="confirmation-screen">
-      <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} />
+      <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} brandTo="/book" />
 
       <div className="confirmation-card">
         <p className="eyebrow">{booking.status === 'cancelled' ? 'Booking cancelled' : 'Booking confirmed'}</p>

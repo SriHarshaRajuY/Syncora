@@ -13,12 +13,13 @@ export function SiteHeader({
   compact = false,
   showSecondary = true,
   secondaryLabel = 'Dashboard',
-  secondaryTo = '/events'
+  secondaryTo = '/events',
+  brandTo = '/'
 }) {
   return (
     <header className={`site-header ${compact ? 'compact' : ''}`}>
       <div className="site-header-inner">
-        <Link className="brand-inline" to="/">
+        <Link className="brand-inline" to={brandTo}>
           <span className="brand-mark">S</span>
           <span className="brand-copy">
             <strong>Syncora</strong>
