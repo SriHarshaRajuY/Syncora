@@ -1436,6 +1436,17 @@ img {
   }
 }
 
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Improve form spacing */
 .form-grid input,
 .form-grid textarea,
@@ -2724,11 +2735,17 @@ body {
 .public-page .public-hero,
 .booking-hero {
   margin-bottom: 26px;
-  padding: 34px 38px;
-  border-radius: 28px;
+  padding: 72px 72px 68px;
+  border-radius: 32px;
   background:
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.26), transparent 18%),
-    linear-gradient(135deg, #0d63db 0%, #0b57d0 48%, #0a47b1 100%);
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.2), transparent 18%),
+    radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.1), transparent 24%),
+    linear-gradient(135deg, #0b63e6 0%, #1452dd 46%, #4a3ff4 100%);
+  box-shadow: 0 30px 70px rgba(20, 82, 221, 0.22);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  animation: heroFadeUp 620ms ease both;
 }
 
 .public-hero p,
@@ -2736,6 +2753,58 @@ body {
   max-width: 680px;
   color: rgba(255, 255, 255, 0.88);
   line-height: 1.7;
+}
+
+.booking-hero-content {
+  max-width: 760px;
+  display: grid;
+  gap: 22px;
+  align-items: start;
+}
+
+.booking-hero .eyebrow {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.84rem;
+  letter-spacing: 0.16em;
+}
+
+.booking-hero h1 {
+  max-width: 760px;
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 3.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  color: #ffffff;
+}
+
+.booking-hero-copy {
+  max-width: 760px;
+  font-size: 1.22rem;
+  line-height: 1.72;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.booking-hero-chips {
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.booking-hero-chips .tag {
+  padding: 11px 16px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.booking-hero-chips .tag:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .public-directory .section-title {

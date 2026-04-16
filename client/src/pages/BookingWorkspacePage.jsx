@@ -119,21 +119,22 @@ export function BookingPage() {
     <div className="public-page calendly-page">
       <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} brandTo="/book" />
 
-      <div className="public-hero booking-hero">
-        <div>
+      <section className="public-hero booking-hero">
+        <div className="booking-hero-content">
           <p className="eyebrow">{rescheduleToken ? 'Reschedule meeting' : 'Book with Syncora'}</p>
           <h1>{rescheduleToken ? 'Choose a new time' : 'Select a time and confirm your meeting'}</h1>
-          <p>
+          <p className="booking-hero-copy">
             A three-panel booking flow with event details, calendar availability, slot selection, and a focused invitee
             form inspired by Calendly&apos;s scheduling experience.
           </p>
+
+          <div className="public-chip-row booking-hero-chips">
+            <span className="tag">Responsive</span>
+            <span className="tag">Buffer-aware</span>
+            <span className="tag">Double-booking safe</span>
+          </div>
         </div>
-        <div className="public-chip-row">
-          <span className="tag">Responsive</span>
-          <span className="tag">Buffer-aware</span>
-          <span className="tag">Double-booking safe</span>
-        </div>
-      </div>
+      </section>
 
       {error ? <div className="banner error narrow">{error}</div> : null}
 
