@@ -2972,6 +2972,72 @@ input[type='checkbox']:focus-visible {
   letter-spacing: -0.03em;
 }
 
+.confirmation-card {
+  display: grid;
+  gap: 22px;
+  text-align: center;
+}
+
+.confirmation-hero-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.confirmation-card h1 {
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  line-height: 1.08;
+  color: #17355c;
+}
+
+.confirmation-attendee {
+  color: #486581;
+  font-size: 1.08rem;
+}
+
+.confirmation-banner {
+  margin: 0;
+  max-width: none;
+}
+
+.confirmation-meta {
+  justify-content: center;
+  gap: 14px;
+}
+
+.confirmation-answers,
+.confirmation-notes {
+  margin: 0;
+}
+
+.confirmation-answer-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+  text-align: left;
+}
+
+.confirmation-answer-row {
+  display: grid;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid #e6eef8;
+}
+
+.confirmation-answer-row:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+.confirmation-answer-row strong {
+  color: #17355c;
+  font-size: 0.95rem;
+}
+
+.confirmation-answer-row span {
+  color: #5f748c;
+  line-height: 1.65;
+}
+
 @media (max-width: 760px) {
   .marketing-shell,
   .public-page,

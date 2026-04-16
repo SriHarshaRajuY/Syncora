@@ -26,6 +26,10 @@ export function ConfirmationPage() {
     return <div className="loading-screen">Loading confirmation...</div>;
   }
 
+  const answerEntries = Object.entries(booking.inviteeAnswers || {}).filter(
+    ([, value]) => value !== null && value !== undefined && String(value).trim() !== ''
+  );
+
   const handleCancel = async () => {
     if (!window.confirm('Cancel this booking?')) {
       return;
@@ -49,14 +53,16 @@ export function ConfirmationPage() {
       <SiteHeader compact ctaLabel="Open Dashboard" ctaTo="/events" showSecondary={false} brandTo="/book" />
 
       <div className="confirmation-card">
-        <p className="eyebrow">{booking.status === 'cancelled' ? 'Booking cancelled' : 'Booking confirmed'}</p>
-        <h1>{booking.eventName}</h1>
-        <p>
-          {booking.inviteeName} - {booking.inviteeEmail}
-        </p>
+        <div className="confirmation-hero-copy">
+          <p className="eyebrow">{booking.status === 'cancelled' ? 'Booking cancelled' : 'Booking confirmed'}</p>
+          <h1>{booking.eventName}</h1>
+          <p className="confirmation-attendee">
+            {booking.inviteeName} - {booking.inviteeEmail}
+          </p>
+        </div>
 
         {state?.emailStatus ? (
-          <div className={`banner ${state.emailStatus.success ? 'success' : 'error'} narrow`}>
+          <div className={`banner confirmation-banner ${state.emailStatus.success ? 'success' : 'error'}`}>
             {state.emailStatus.success
               ? 'Confirmation email sent successfully.'
               : `Booking confirmed, but email failed: ${state.emailStatus.reason}`}
@@ -72,11 +78,28 @@ export function ConfirmationPage() {
           <span>{booking.eventLocation}</span>
         </div>
 
+        {answerEntries.length ? (
+          <div className="confirmation-answers">
+            <div className="selection-preview">
+              <p className="eyebrow">Submitted details</p>
+              <h4>Your booking form responses</h4>
+              <div className="confirmation-answer-list">
+                {answerEntries.map(([label, value]) => (
+                  <div className="confirmation-answer-row" key={label}>
+                    <strong>{label}</strong>
+                    <span>{value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : null}
+
         <div className="confirmation-notes">
           <div className="selection-preview">
             <p className="eyebrow">Manage this booking</p>
             <h4>{booking.status === 'cancelled' ? 'This booking has been cancelled.' : 'Use the actions below to make changes.'}</h4>
-            <p>The same token-backed flow supports rescheduling and invitee-side cancellation.</p>
+            <p>Reschedule or cancel from this page with the same smooth flow used during booking.</p>
           </div>
         </div>
 

@@ -229,7 +229,13 @@ export const cancelMeeting = async (id, reason = 'Cancelled by host') => {
     inviteeEmail: meeting.inviteeEmail,
     inviteeName: meeting.inviteeName,
     eventName: meeting.eventName,
-    cancelledAt: dayjs().format('ddd, MMM D YYYY hh:mm A')
+    startAt: dayjs(meeting.startAt).format('ddd, MMM D YYYY hh:mm A'),
+    endAt: dayjs(meeting.endAt).format('ddd, MMM D YYYY hh:mm A'),
+    timezone: meeting.timezone,
+    location: meeting.eventLocation,
+    cancelledAt: dayjs().format('ddd, MMM D YYYY hh:mm A'),
+    reason,
+    answers: meeting.inviteeAnswers
   });
 
   return {
@@ -256,7 +262,10 @@ export const createBooking = async ({ slug, payload }) => {
     eventName: meeting.eventName,
     startAt: dayjs(meeting.startAt).format('ddd, MMM D YYYY hh:mm A'),
     endAt: dayjs(meeting.endAt).format('ddd, MMM D YYYY hh:mm A'),
-    manageUrl: buildManageUrl(meeting)
+    timezone: meeting.timezone,
+    location: meeting.eventLocation,
+    manageUrl: buildManageUrl(meeting),
+    answers: meeting.inviteeAnswers
   });
 
   return {
@@ -284,7 +293,10 @@ export const rescheduleMeetingByToken = async (token, payload) => {
     eventName: `${updatedMeeting.eventName} rescheduled`,
     startAt: dayjs(updatedMeeting.startAt).format('ddd, MMM D YYYY hh:mm A'),
     endAt: dayjs(updatedMeeting.endAt).format('ddd, MMM D YYYY hh:mm A'),
-    manageUrl: buildManageUrl(updatedMeeting)
+    timezone: updatedMeeting.timezone,
+    location: updatedMeeting.eventLocation,
+    manageUrl: buildManageUrl(updatedMeeting),
+    answers: updatedMeeting.inviteeAnswers
   });
 
   return {
