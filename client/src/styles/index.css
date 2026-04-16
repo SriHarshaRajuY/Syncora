@@ -1614,8 +1614,16 @@ a:hover {
 }
 
 .cal-search-icon {
-  color: #7c8da3;
-  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #edf4ff;
+  border: 1px solid rgba(191, 208, 234, 0.95);
+  color: #0057d9;
+  font-size: 0.95rem;
   font-weight: 700;
 }
 
@@ -3077,5 +3085,113 @@ input[type='checkbox']:focus-visible {
   .drawer-form-body {
     padding-left: 18px;
     padding-right: 18px;
+  }
+}
+
+/* Button sizing normalization (Calendly-like consistent control sizes) */
+:root {
+  --btn-h: 44px;
+}
+
+.primary-button,
+.secondary-button,
+.ghost-button,
+.tab,
+.meeting-scope-tab,
+.cal-create-button {
+  min-height: var(--btn-h);
+  height: var(--btn-h);
+  padding: 0 18px;
+  line-height: 1;
+  font-size: 0.96rem;
+}
+
+.ghost-button.icon-close {
+  height: var(--btn-h);
+  min-height: var(--btn-h);
+}
+
+/* Extra-small screens: keep layout from overflowing */
+@media (max-width: 520px) {
+  /* Header becomes a stacked block */
+  .site-header-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 22px;
+  }
+
+  .site-nav {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  .site-nav-link {
+    flex: 1 1 140px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .site-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .site-header-actions .primary-button,
+  .site-header-actions .ghost-button {
+    flex: 1 1 180px;
+    justify-content: center;
+  }
+
+  /* Admin layout: sidebar should not keep full viewport height */
+  .cal-sidebar {
+    position: relative;
+    height: auto;
+    padding: 20px 14px;
+  }
+
+  .cal-page {
+    padding: 20px 14px 32px;
+  }
+
+  /* Meetings cards should stack cleanly */
+  .meeting-card {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  /* Booking page calendar + slots */
+  .booking-layout-refined {
+    border-radius: 22px;
+  }
+
+  .calendar-grid {
+    gap: 8px;
+  }
+
+  .calendar-label {
+    font-size: 0.78rem;
+  }
+
+  .day-cell,
+  .slot-button {
+    min-height: 42px;
+    border-radius: 14px;
+  }
+
+  .slot-list {
+    gap: 8px;
+    max-height: 300px;
+  }
+
+  /* Confirmation page spacing */
+  .confirmation-card {
+    padding: 26px 18px;
+    gap: 18px;
+  }
+
+  .confirmation-meta {
+    gap: 10px;
   }
 }
