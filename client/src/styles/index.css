@@ -1605,25 +1605,26 @@ a:hover {
   width: min(420px, 100%);
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 0 18px;
-  min-height: 52px;
-  border-radius: 16px;
-  border: 1px solid #bfd0ea;
+  gap: 10px;
+  padding: 0 14px;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
   background: #ffffff;
+  box-shadow: none;
 }
 
 .cal-search-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 44px;
-  padding: 0 14px;
-  border-radius: 999px;
-  background: #edf4ff;
-  border: 1px solid rgba(191, 208, 234, 0.95);
-  color: #0057d9;
-  font-size: 0.95rem;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: #6b7a90;
+  font-size: 1rem;
   font-weight: 700;
 }
 
@@ -2964,9 +2965,10 @@ input[type='checkbox']:focus-visible {
 }
 
 .cal-search {
-  min-height: 50px;
-  border-color: var(--field-border);
-  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02);
+  min-height: 44px;
+  border-color: #e5e7eb;
+  box-shadow: none;
+  border-radius: 999px;
 }
 
 .confirmation-card {

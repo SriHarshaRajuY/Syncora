@@ -1,90 +1,182 @@
 # Syncora – Calendly Clone (Scheduling Platform)
 
-## 🚀 Overview
+## Overview
+Syncora is a full-stack scheduling web application inspired by Calendly. It lets teams create **event types**, configure **availability schedules**, and provide a **public booking flow** for invitees to select time slots and confirm meetings.
 
-Syncora is a full-stack scheduling platform inspired by Calendly.
-It allows users to create event types, manage availability, and share booking links for others to schedule meetings.
+This project is built for evaluation/demonstration purposes: the admin workspace assumes a **single default user** (no login required).
 
----
+## Key Features
+### Core
+- **Event types management**: create, edit, delete event types (name, duration, slug, description, location, buffers, color, active/inactive).
+- **Unique public booking links** for each active event type.
+- **Availability setup**:
+  - weekly working hours per schedule (days of week + start/end times)
+  - timezone support
+  - date-specific overrides (available/unavailable windows with optional reason)
+- **Public booking flow**:
+  - month calendar date selection
+  - slot selection for the chosen date
+  - booking form (invitee name + email + custom invitee questions)
+  - **prevents double booking** of overlapping scheduled meetings
+- **Booking confirmation page** with meeting details and manage actions.
+- **Meetings dashboard**:
+  - upcoming and past views
+  - cancel meetings
+  - reschedule flow
 
-## 🛠 Tech Stack
+### Bonus (Included)
+- Multiple schedules per user and per event-type mapping.
+- Buffer time before/after meetings.
+- Rescheduling a booking using a token-based flow.
+- Email notifications using **Nodemailer**:
+  - booking confirmation email
+  - cancellation email
+  - both include invitee answers (custom questions) and meeting details.
 
-### Frontend
+## System Architecture
+### High-level flow
+Client (React) → API (Express) → Services (business logic) → MySQL (schema/data)
 
-* React.js (Vite)
-* CSS (Custom UI inspired by Calendly)
+### Tech Stack
+**Frontend**
+- React (Vite)
+- React Router
+- Custom CSS styled to follow Calendly-like UI patterns
 
-### Backend
+**Backend**
+- Node.js + Express.js (REST API)
+- MySQL (via `mysql2`)
+- Nodemailer for email delivery
 
-* Node.js
-* Express.js
+## Database Design
+Schema is SQL-first (no ORM):
+- `users`
+- `availability_schedules`
+- `availability_rules`
+- `availability_overrides`
+- `availability_settings`
+- `event_types`
+- `meetings`
 
-### Database
+Key relationships:
+- `availability_rules` references `availability_schedules`
+- `availability_overrides` references `availability_schedules`
+- `event_types` references `availability_schedules`
+- `meetings` references `event_types`
 
-* MySQL (Railway)
+Example constraints:
+- unique `event_types.slug`
+- unique `(schedule_id, override_date)` for overrides
 
-### Deployment
+## API Documentation (REST)
+Base path: `/api`
 
-* Frontend: Vercel
-* Backend: Render
+### Event Types
+- `GET    /api/event-types`
+- `POST   /api/event-types`
+- `PUT    /api/event-types/:id`
+- `DELETE /api/event-types/:id`
 
----
+### Availability
+- `GET    /api/availability/schedules`
+- `POST   /api/availability/schedules`
+- `PUT    /api/availability/schedules/:id`
+- `DELETE /api/availability/schedules/:id`
+- `GET    /api/availability/settings`
+- `PUT    /api/availability/settings`
+- `GET    /api/availability/public/:slug/month?month=YYYY-MM`
+- `GET    /api/availability/public/:slug/slots?date=YYYY-MM-DD`
 
-## ✨ Features
+### Meetings + Booking / Reschedule / Cancel
+Admin scopes:
+- `GET  /api/meetings?scope=upcoming|past`
+- `POST /api/meetings/:id/cancel`
 
-### Core Features
+Public booking:
+- `GET  /api/meetings/public/event-types`
+- `GET  /api/meetings/public/event-types/:slug`
+- `POST /api/meetings/public/event-types/:slug/book`
+- `GET  /api/meetings/public/booking/:id`
 
-* Create, edit, delete event types
-* Unique public booking links
-* Weekly availability setup
-* Time slot selection with calendar UI
-* Booking form (name, email, custom questions)
-* Prevent double booking
-* Booking confirmation page
-* Meetings dashboard (upcoming & past)
-* Cancel meetings
+Token-based reschedule/cancel:
+- `GET  /api/meetings/public/reschedule/:token`
+- `POST /api/meetings/public/reschedule/:token`
+- `POST /api/meetings/public/reschedule/:token/cancel`
 
----
+## Email Notifications
+Email delivery uses Nodemailer (SMTP).
 
-### Bonus Features
+### Booking confirmation email
+Sent after booking is created.
+Includes:
+- event name
+- start/end time + timezone
+- location
+- **all invitee answers** (custom questions)
+- manage-booking link
 
-* Multiple schedules
-* Date-specific overrides
-* Rescheduling meetings
-* Email notifications (Nodemailer)
-* Buffer time before/after meetings
-* Custom invitee questions
-* Responsive UI (mobile + desktop)
+### Cancellation email
+Sent after a booking is cancelled (host cancel or invitee token cancel).
+Includes:
+- event name
+- original meeting start/end + timezone
+- location
+- cancellation reason (when provided)
+- **all invitee answers**
 
----
-
-## 📁 Project Structure
-
+## Project Structure
 ```
 Syncora/
-│
-├── client/        # Frontend (React + Vite)
-├── server/        # Backend (Node + Express)
-├── README.md
+  client/   # React frontend (Vite)
+  server/   # Express backend
+  README.md
 ```
 
----
+Important implementation files:
+- `client/src/pages/*` (public + admin views)
+- `client/src/styles/index.css` (Calendly-like styling)
+- `server/sql/schema.sql` and `server/sql/seed.sql` (database setup)
 
-## ⚙️ Environment Variables
+## Installation
+### Prerequisites
+- Node.js 18+
+- MySQL database instance
+- SMTP credentials (if you want real emails; otherwise emails are skipped when SMTP is not configured)
 
-### Backend (.env)
+### Setup (Database)
+From the project root:
+1. Configure MySQL credentials in the server environment.
+2. The app can load schema + seed via:
+   - `npm run seed` (workspace: `server`)
 
+### Setup (Server)
+```bash
+cd server
+npm install
+cp .env.example .env   # if you have one
+npm run dev
 ```
+
+### Setup (Client)
+```bash
+cd client
+npm install
+npm run dev
+```
+
+## Environment Variables
+### Server (`server/.env`)
+```bash
 PORT=4000
 
-CLIENT_ORIGIN=https://your-frontend.vercel.app
-APP_BASE_URL=https://your-frontend.vercel.app
+CLIENT_ORIGIN=http://localhost:5173
+APP_BASE_URL=http://localhost:5173
 
-DB_HOST=your-db-host
-DB_PORT=your-db-port
+DB_HOST=localhost
+DB_PORT=3306
 DB_NAME=railway
 DB_USER=root
-DB_PASSWORD=your-password
+DB_PASSWORD=your-db-password
 
 DEFAULT_TIMEZONE=Asia/Kolkata
 
@@ -92,90 +184,37 @@ SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
-SMTP_FROM=Scheduler Clone <your-email@gmail.com>
+SMTP_FROM="Scheduler Clone <your-email@gmail.com>"
 ```
 
----
-
-### Frontend (.env)
-
-```
-VITE_API_BASE_URL=https://your-backend.onrender.com/api
+### Client (`client/.env`)
+```bash
+VITE_API_BASE_URL=http://localhost:4000/api
 ```
 
----
+## UI/UX Notes
+- The booking UI follows a Calendly-style experience:
+  - three-step booking flow on the public booking page
+  - consistent card spacing, typography, and button styling
+- The admin workspace (Scheduling, Availability, Meetings) uses the same design language.
+- The layout is responsive for mobile/tablet/desktop.
 
-## 🗄 Database Setup
+## Deployment
+Suggested deployment:
+- **Frontend**: Vercel (builds from `client/`)
+- **Backend**: Render (runs from `server/`)
 
-1. Connect to MySQL (Railway)
-2. Run:
+Deployment basics:
+- Set `VITE_API_BASE_URL` on the frontend environment
+- Set all server `.env` variables on Render (DB + SMTP + base URLs)
 
-   * `schema.sql`
-   * `seed.sql`
-
----
-
-## ▶️ Running Locally
-
-### Backend
-
-```
-cd server
-npm install
-npm run dev
-```
-
----
-
-### Frontend
-
-```
-cd client
-npm install
-npm run dev
-```
+## Testing Features (Manual)
+- Create an event type → copy its public booking link
+- Book a meeting → verify confirmation page + email
+- Try double booking → verify slot is blocked
+- Cancel meeting → verify cancellation email + status update
+- Reschedule meeting → verify token flow works end-to-end
 
 ---
+This project is original work for an educational full-stack assignment and is designed for evaluation and demonstration.
 
-## 🌐 Deployment
-
-### Backend (Render)
-
-* Root: `server`
-* Build: `npm install`
-* Start: `node src/index.js`
-
-### Frontend (Vercel)
-
-* Root: `client`
-* Add env: `VITE_API_BASE_URL`
-
----
-
-## 🧪 Testing Features
-
-* Book a meeting → confirmation page
-* Email received
-* Try double booking → blocked
-* Cancel meeting → works
-* Reschedule meeting → works
-
----
-
-## 🧠 Key Highlights
-
-* Double booking prevention logic
-* Clean modular backend structure
-* Real-world deployment setup
-* Calendly-like UI/UX design
-* Full booking lifecycle (create → manage → cancel → reschedule)
-
----
-
-## 📌 Notes
-
-* No authentication (single default user)
-* Designed for evaluation and demonstration
-* Uses real email notifications via SMTP
-
----

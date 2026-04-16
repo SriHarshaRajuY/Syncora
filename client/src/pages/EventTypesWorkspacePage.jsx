@@ -98,7 +98,9 @@ export function EventTypesPage() {
 
       <section className="cal-toolbar">
         <label className="cal-search">
-          <span className="cal-search-icon">Search</span>
+          <span className="cal-search-icon" aria-hidden="true">
+            🔍
+          </span>
           <input
             type="search"
             value={search}
