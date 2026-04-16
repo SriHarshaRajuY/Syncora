@@ -99,7 +99,21 @@ export function EventTypesPage() {
       <section className="cal-toolbar">
         <label className="cal-search">
           <span className="cal-search-icon" aria-hidden="true">
-            🔍
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path
+                d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <path
+                d="M16.2 16.2 21 21"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            </svg>
           </span>
           <input
             type="search"

@@ -1,4 +1,5 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const primaryLinks = [
   { to: '/events', label: 'Scheduling' },
@@ -15,6 +16,44 @@ export function SiteHeader({
   secondaryTo = '/events',
   brandTo = '/'
 }) {
+  const location = useLocation();
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    const onMouseDown = (event) => {
+      const el = dropdownRef.current;
+      if (!el) return;
+      if (event.target instanceof Node && !el.contains(event.target)) {
+        setMobileOpen(false);
+      }
+    };
+
+    window.addEventListener('mousedown', onMouseDown);
+    return () => window.removeEventListener('mousedown', onMouseDown);
+  }, [mobileOpen]);
+
+  const navLinks = useMemo(
+    () =>
+      primaryLinks.map((item) => (
+        <NavLink
+          key={item.to}
+          to={item.to}
+          className={({ isActive }) => `site-nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => setMobileOpen(false)}
+        >
+          {item.label}
+        </NavLink>
+      )),
+    []
+  );
+
   return (
     <header className={`site-header ${compact ? 'compact' : ''}`}>
       <div className="site-header-inner">
@@ -26,13 +65,19 @@ export function SiteHeader({
           </span>
         </Link>
 
-        <nav className="site-nav">
-          {primaryLinks.map((item) => (
-            <NavLink key={item.to} to={item.to} className={({ isActive }) => `site-nav-link ${isActive ? 'active' : ''}`}>
-              {item.label}
-            </NavLink>
-          ))}
-        </nav>
+        <nav className="site-nav site-nav-desktop">{navLinks}</nav>
+
+        <button
+          className="mobile-menu-button"
+          type="button"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen((v) => !v)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
 
         <div className="site-header-actions">
           {showSecondary ? (
@@ -45,6 +90,12 @@ export function SiteHeader({
           </Link>
         </div>
       </div>
+
+      {mobileOpen ? (
+        <nav className="mobile-nav-dropdown" ref={dropdownRef}>
+          {navLinks}
+        </nav>
+      ) : null}
     </header>
   );
 }

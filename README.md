@@ -169,8 +169,8 @@ npm run dev
 ```bash
 PORT=4000
 
-CLIENT_ORIGIN=http://localhost:5173
-APP_BASE_URL=http://localhost:5173
+CLIENT_ORIGIN=https://syncora-client.vercel.app
+APP_BASE_URL=https://syncora-client.vercel.app
 
 DB_HOST=localhost
 DB_PORT=3306
@@ -189,7 +189,7 @@ SMTP_FROM="Scheduler Clone <your-email@gmail.com>"
 
 ### Client (`client/.env`)
 ```bash
-VITE_API_BASE_URL=http://localhost:4000/api
+VITE_API_BASE_URL=https://syncora-87yl.onrender.com/api
 ```
 
 ## UI/UX Notes
