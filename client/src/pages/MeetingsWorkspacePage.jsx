@@ -106,6 +106,13 @@ export function MeetingsPage() {
             >
               Past
             </button>
+            <button
+              className={`meeting-scope-tab ${scope === 'cancelled' ? 'active' : ''}`}
+              onClick={() => setScope('cancelled')}
+              type="button"
+            >
+              Cancelled
+            </button>
           </div>
 
           <div className="meetings-summary">Displaying {filteredMeetings.length} event(s)</div>
@@ -195,11 +202,17 @@ export function MeetingsPage() {
           </section>
         ) : (
           <div className="empty-state-card meetings-empty-state">
-            <h3>No events yet</h3>
-            <p>Share your event type links to begin collecting meetings in this workspace.</p>
-            <a className="primary-button" href="/events">
-              View event types
-            </a>
+            <h3>{scope === 'cancelled' ? 'No cancelled meetings' : 'No events yet'}</h3>
+            <p>
+              {scope === 'cancelled'
+                ? 'Cancelled meetings will appear here once any scheduled meeting is cancelled.'
+                : 'Share your event type links to begin collecting meetings in this workspace.'}
+            </p>
+            {scope !== 'cancelled' ? (
+              <a className="primary-button" href="/events">
+                View event types
+              </a>
+            ) : null}
           </div>
         )}
       </section>

@@ -176,18 +176,30 @@ const saveMeeting = async ({ eventType, schedule, payload, existingMeetingId }) 
 };
 
 export const listMeetings = async (scope = 'upcoming') => {
-  const comparator = scope === 'past' ? '<' : '>=';
-  const sortDirection = scope === 'past' ? 'DESC' : 'ASC';
+  let query = '';
+  let params = [DEFAULT_USER_ID];
 
-  const [rows] = await pool.query(
-    `
+  if (scope === 'cancelled') {
+    query = `
       ${baseMeetingSelect}
       WHERE et.user_id = ?
+        AND m.status = 'cancelled'
+      ORDER BY COALESCE(m.cancelled_at, m.updated_at, m.start_at) DESC
+    `;
+  } else {
+    const comparator = scope === 'past' ? '<' : '>=';
+    const sortDirection = scope === 'past' ? 'DESC' : 'ASC';
+
+    query = `
+      ${baseMeetingSelect}
+      WHERE et.user_id = ?
+        AND m.status = 'scheduled'
         AND m.start_at ${comparator} UTC_TIMESTAMP()
       ORDER BY m.start_at ${sortDirection}
-    `,
-    [DEFAULT_USER_ID]
-  );
+    `;
+  }
+
+  const [rows] = await pool.query(query, params);
 
   return rows.map(buildMeetingResponse);
 };
