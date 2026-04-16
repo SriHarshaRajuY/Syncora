@@ -1,9 +1,11 @@
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client.js';
 import { AdminShell } from '../components/AdminShell.jsx';
 
 export function MeetingsPage() {
+  const navigate = useNavigate();
   const [scope, setScope] = useState('upcoming');
   const [meetings, setMeetings] = useState([]);
   const [error, setError] = useState('');
@@ -176,9 +178,7 @@ export function MeetingsPage() {
                     <>
                       <button
                         className="secondary-button"
-                        onClick={() =>
-                          window.open(`/book/${meeting.eventSlug}?reschedule=${meeting.rescheduleToken}`, '_blank')
-                        }
+                        onClick={() => navigate(`/book/${meeting.eventSlug}?reschedule=${meeting.rescheduleToken}`)}
                       >
                         Reschedule
                       </button>

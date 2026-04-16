@@ -1,8 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 
 const primaryLinks = [
-  { to: '/', label: 'Overview' },
-  { to: '/events', label: 'Event Types' },
+  { to: '/events', label: 'Scheduling' },
   { to: '/availability', label: 'Availability' },
   { to: '/meetings', label: 'Meetings' }
 ];

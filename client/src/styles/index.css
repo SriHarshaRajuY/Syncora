@@ -782,10 +782,10 @@ img {
 }
 
 .card-actions.vertical {
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-start;
-  min-width: 138px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
 }
 
 .card-actions {
@@ -1062,6 +1062,10 @@ img {
   margin-top: 22px;
 }
 
+.slots-panel.embedded h3 {
+  margin-bottom: 14px;
+}
+
 .slot-list {
   display: grid;
   gap: 10px;
@@ -1245,6 +1249,7 @@ img {
 
 .filter-bar {
   display: flex;
+  align-items: flex-end;
   gap: 14px;
   flex-wrap: wrap;
   margin-bottom: 24px;
@@ -1262,6 +1267,12 @@ img {
 
 .filter-input {
   min-width: 220px;
+  flex: 2 1 260px;
+}
+
+.filter-bar select,
+.filter-bar .date-range-field {
+  flex: 1 1 160px;
 }
 
 .required {
@@ -1710,8 +1721,8 @@ a:hover {
 .availability-workspace {
   display: grid;
   grid-template-columns: 320px minmax(0, 1fr);
-  gap: 22px;
-  padding-top: 8px;
+  gap: 26px;
+  padding-top: 10px;
 }
 
 .schedule-index-card,
@@ -2011,6 +2022,7 @@ a:hover {
   }
 
   .card-actions.vertical {
+    flex-direction: column;
     align-items: stretch;
     min-width: 0;
   }
@@ -2090,6 +2102,10 @@ a:hover {
 .drawer-form-footer {
   padding: 24px 28px;
   border-bottom: 1px solid #dbe4f0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .drawer-form-footer {
@@ -2739,6 +2755,10 @@ body {
 .booking-layout-refined {
   border-radius: 28px;
   background: #ffffff;
+}
+
+.booking-hero h1 {
+  font-size: clamp(2.1rem, 4.1vw, 3.1rem);
 }
 
 .booking-summary-panel,
